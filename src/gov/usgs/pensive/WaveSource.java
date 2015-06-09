@@ -72,15 +72,15 @@ public class WaveSource implements Runnable {
 		while (true) {
 			PlotJob pj = null;
 			try {
-				pj = plotJobs.peek();
-				if (pj == null)
-				    continue;
-				long timeMs = System.currentTimeMillis();
-				if (timeMs < pj.plotTimeMs) {
-				    LOGGER.trace("Wave source {} idle. Next subnet is {} in {} s", name, pj.subnet.subnetName, (pj.plotTimeMs - timeMs)/1000);
-				    Thread.sleep(1000);
-				    continue;
-				}
+//				pj = plotJobs.peek();
+//				if (pj == null)
+//				    continue;
+//				long timeMs = System.currentTimeMillis();
+//				if (timeMs < pj.plotTimeMs) {
+//				    LOGGER.trace("Wave source {} idle. Next subnet is {} in {} s", name, pj.subnet.subnetName, (pj.plotTimeMs - timeMs)/1000);
+//				    Thread.sleep(1000);
+//				    continue;
+//				}
 
 				pj = plotJobs.take();
 				SubnetPlotter subnet = pj.subnet;

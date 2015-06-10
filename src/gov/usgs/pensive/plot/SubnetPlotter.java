@@ -181,7 +181,7 @@ public class SubnetPlotter {
      *            The file to write
      */
     private void writePNG(Plot plot, String fileName) {
-        LOGGER.debug("writting " + fileName);
+        LOGGER.debug("writing " + fileName);
         try {
             plot.writePNG(fileName);
         } catch (PlotException e) {

@@ -1,11 +1,11 @@
 package gov.usgs.pensive.plot;
 
-import gov.usgs.pensive.Channel;
 import gov.usgs.plot.Plot;
 import gov.usgs.plot.PlotException;
 import gov.usgs.swarm.data.SeismicDataSource;
 import gov.usgs.util.ConfigFile;
 import gov.usgs.util.Time;
+import gov.usgs.volcanoes.pensive.Channel;
 
 import java.awt.Dimension;
 import java.io.File;

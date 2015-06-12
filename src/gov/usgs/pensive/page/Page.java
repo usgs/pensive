@@ -19,9 +19,9 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
 import freemarker.template.Version;
-import gov.usgs.pensive.Pensive;
 import gov.usgs.pensive.plot.SubnetPlotter;
 import gov.usgs.util.ConfigFile;
+import gov.usgs.volcanoes.pensive.Pensive;
 
 /**
  * 

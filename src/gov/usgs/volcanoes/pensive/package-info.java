@@ -4,4 +4,4 @@
  * 	
  * @author Tom Parker
  */
-package gov.usgs.pensive;
+package gov.usgs.volcanoes.pensive;

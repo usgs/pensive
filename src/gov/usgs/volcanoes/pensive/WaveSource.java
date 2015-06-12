@@ -1,4 +1,4 @@
-package gov.usgs.pensive;
+package gov.usgs.volcanoes.pensive;
 
 import gov.usgs.pensive.plot.SubnetPlotter;
 import gov.usgs.swarm.data.DataSourceType;

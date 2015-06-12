@@ -1,4 +1,4 @@
-package gov.usgs.pensive;
+package gov.usgs.volcanoes.pensive;
 
 import gov.usgs.pensive.plot.ChannelPlotter;
 import gov.usgs.pensive.plot.FullPlotter;

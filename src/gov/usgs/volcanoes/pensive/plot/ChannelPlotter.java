@@ -1,4 +1,4 @@
-package gov.usgs.pensive.plot;
+package gov.usgs.volcanoes.pensive.plot;
 
 import gov.usgs.plot.data.SliceWave;
 import gov.usgs.plot.data.Spectrogram;

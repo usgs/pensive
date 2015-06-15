@@ -1,8 +1,8 @@
 package gov.usgs.volcanoes.pensive;
 
-import gov.usgs.pensive.plot.SubnetPlotter;
 import gov.usgs.util.ConfigFile;
 import gov.usgs.util.Pool;
+import gov.usgs.volcanoes.pensive.plot.SubnetPlotter;
 
 import java.util.LinkedList;
 import java.util.List;

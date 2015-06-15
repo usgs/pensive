@@ -1,4 +1,4 @@
-package gov.usgs.pensive.plot;
+package gov.usgs.volcanoes.pensive.plot;
 
 import gov.usgs.plot.Plot;
 import gov.usgs.plot.PlotException;

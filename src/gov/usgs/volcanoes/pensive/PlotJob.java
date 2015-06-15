@@ -1,6 +1,6 @@
 package gov.usgs.volcanoes.pensive;
 
-import gov.usgs.pensive.plot.SubnetPlotter;
+import gov.usgs.volcanoes.pensive.plot.SubnetPlotter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

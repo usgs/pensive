@@ -1,10 +1,10 @@
 package gov.usgs.volcanoes.pensive;
 
-import gov.usgs.pensive.page.Page;
-import gov.usgs.pensive.plot.SubnetPlotter;
 import gov.usgs.util.ConfigFile;
 import gov.usgs.util.Log;
 import gov.usgs.util.Util;
+import gov.usgs.volcanoes.pensive.page.Page;
+import gov.usgs.volcanoes.pensive.plot.SubnetPlotter;
 
 import java.io.FileOutputStream;
 import java.io.IOException;

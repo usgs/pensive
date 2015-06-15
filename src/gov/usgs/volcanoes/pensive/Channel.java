@@ -1,9 +1,5 @@
 package gov.usgs.volcanoes.pensive;
 
-import gov.usgs.pensive.plot.ChannelPlotter;
-import gov.usgs.pensive.plot.FullPlotter;
-import gov.usgs.pensive.plot.SubnetPlotter;
-import gov.usgs.pensive.plot.ThumbnailPlotter;
 import gov.usgs.plot.data.SliceWave;
 import gov.usgs.plot.data.Wave;
 import gov.usgs.plot.render.Renderer;
@@ -11,6 +7,10 @@ import gov.usgs.swarm.data.SeismicDataSource;
 import gov.usgs.util.ConfigFile;
 import gov.usgs.util.Time;
 import gov.usgs.util.Util;
+import gov.usgs.volcanoes.pensive.plot.ChannelPlotter;
+import gov.usgs.volcanoes.pensive.plot.FullPlotter;
+import gov.usgs.volcanoes.pensive.plot.SubnetPlotter;
+import gov.usgs.volcanoes.pensive.plot.ThumbnailPlotter;
 
 import java.awt.Dimension;
 import java.io.File;

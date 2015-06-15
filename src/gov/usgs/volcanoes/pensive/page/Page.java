@@ -1,4 +1,4 @@
-package gov.usgs.pensive.page;
+package gov.usgs.volcanoes.pensive.page;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -19,9 +19,9 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
 import freemarker.template.Version;
-import gov.usgs.pensive.plot.SubnetPlotter;
 import gov.usgs.util.ConfigFile;
 import gov.usgs.volcanoes.pensive.Pensive;
+import gov.usgs.volcanoes.pensive.plot.SubnetPlotter;
 
 /**
  * 

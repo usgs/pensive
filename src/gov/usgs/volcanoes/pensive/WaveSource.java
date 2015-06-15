@@ -1,10 +1,10 @@
 package gov.usgs.volcanoes.pensive;
 
-import gov.usgs.pensive.plot.SubnetPlotter;
 import gov.usgs.swarm.data.DataSourceType;
 import gov.usgs.swarm.data.SeismicDataSource;
 import gov.usgs.util.ConfigFile;
 import gov.usgs.util.Time;
+import gov.usgs.volcanoes.pensive.plot.SubnetPlotter;
 
 import java.util.concurrent.BlockingQueue;
 

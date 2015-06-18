@@ -85,7 +85,7 @@ public class Page {
      */
     protected void initializeTemplateEngine() throws IOException {
         cfg = new Configuration();
-        cfg.setTemplateLoader(new ClassTemplateLoader(getClass(), "/gov/usgs/pensive/page"));
+        cfg.setTemplateLoader(new ClassTemplateLoader(getClass(), "/gov/usgs/volcanoes/pensive/page"));
         DefaultObjectWrapper obj = new DefaultObjectWrapper();
         obj.setExposeFields(true);
         cfg.setObjectWrapper(obj);

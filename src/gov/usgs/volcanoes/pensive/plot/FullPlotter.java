@@ -8,6 +8,9 @@ import gov.usgs.util.ConfigFile;
 import java.awt.Dimension;
 import java.awt.Font;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  * 
  * @author Tom Parker
@@ -16,6 +19,9 @@ import java.awt.Font;
  * https://creativecommons.org/publicdomain/zero/1.0/legalcode
  */
 public class FullPlotter extends ChannelPlotter {
+
+    /** my logger */
+    private static final Logger LOGGER = LoggerFactory.getLogger(SubnetPlotter.class);
 
     /** Font used to indicate that no data was available */
     public static final Font NO_DATA_FONT = Font.decode("dialog-PLAIN-36");

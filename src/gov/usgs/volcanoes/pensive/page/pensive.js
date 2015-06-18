@@ -308,7 +308,7 @@ function updateAbsoluteTime() {
 	var date = $("#ATDate").val();
 	date = date.replace(/(-\d{2}) (\d{2}:)/, '$1T$2');
 
-	date = date.replace(ATDateFormat, '$1-$3-$4T$6:$7');
+	date = date.replace(ATDateFormat, '$1-$3-$4T$6:$7+00:00');
 
 	dateMs = new Date(date).getTime();
 	dateMs -= dateMs % refreshPeriodMs;

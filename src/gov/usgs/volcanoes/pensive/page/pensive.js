@@ -57,12 +57,6 @@ var dailyMosaic;
 
 var mosaicPosition;
 
-// var dateFormats =
-// [/^((19|20)\d{2})[-/]?((1[0-2]|0\d)[-/]?([0-2]\d|3[0-1]))(T|\s*)+([01]\d|2[0-3]):?([0-5]\d)$/
-// /^\d{4}[-/]?\d{2}[-/]?\d{2}\s*(\d{2}:?\d{2})?$/,
-// /^\d{4}-(0\d|1[0-2])-[01]\dT[01]\d:[0-5]\d{}$/
-// ];
-// /^((19|20)\d{2})[-/]?(1[0-2]|0\d)[-/]?([0-2]\d|3[0-1])(T|\s*)+([01]\d|2[0-3]):?([0-5]\d)$/;
 var ATDateFormat = /^((19|20)\d{2})[-/]?(1[0-2]|0\d)[-/]?([0-2]\d|3[0-1])(T|\s*)+([01]\d|2[0-3]):?([0-5]\d)$/;
 
 /**
@@ -105,7 +99,7 @@ function init() {
 
 function initalizeDialogs() {
 	// Absolute date
-	$("#ATDate").val(ATDateFormatter.format(startTime));
+	$("#ATDate").val(ATDateFormatter.formatUTC(startTime));
 	$("#ATDate").addClass("valid");
 
 	// Mosaic options
@@ -114,10 +108,8 @@ function initalizeDialogs() {
 }
 
 function getMostRecentEnd() {
-	var endTime = new Date();
-	var n = endTime.getTime();
-	n += endTime.getTimezoneOffset() * 60 * 1000
-	return (n - (n % (refreshPeriodMs)));
+	var et = Date.now();
+	return (et - (et % (refreshPeriodMs)));
 }
 
 function updateMainFrame(e) {
@@ -282,11 +274,7 @@ function updateMosaicOptions() {
 	var now = getMostRecentEnd();
 
 	if ($("#dailyMosaic").is(":checked")) {
-		var tzOffset = endTime.getTimezoneOffset() * 60 * 1000;
-
-		now -= tzOffset
 		now += DAY_MS - (now % DAY_MS);
-		now += tzOffset;
 		mosaicEnd = new Date(now);
 		spanMs = hToMs(24);
 	} else {
@@ -337,9 +325,9 @@ function incrementSubnet(e) {
 /* The time changed, now what? */
 function updateTimeLabel() {
 	$("#timeSpan").text(
-			dateFormatter.format(startTime) + " "
-					+ timeFormatter.format(startTime) + " - "
-					+ timeFormatter.format(endTime) + " UTC");
+			dateFormatter.formatUTC(startTime) + " "
+					+ timeFormatter.formatUTC(startTime) + " - "
+					+ timeFormatter.formatUTC(endTime) + " UTC");
 }
 
 function incrementTime(e) {
@@ -362,15 +350,11 @@ function incrementTime(e) {
 			mosaicEnd.setTime(now);
 
 		if ($("#dailyMosaic").is(":checked")) {
-			var tzOffset = mosaicEnd.getTimezoneOffset() * 60 * 1000;
-
 			var newEndMs = mosaicEnd.getTime();
 			if (newEndMs == now)
 				newEndMs += DAY_MS;
 
-			newEndMs -= tzOffset;
 			newEndMs -= newEndMs % DAY_MS;
-			newEndMs += tzOffset;
 			mosaicEnd = new Date(newEndMs);
 
 		}
@@ -412,7 +396,7 @@ function displayMosaic() {
 		cell = $(document.createElement('td'));
 		row.append(cell);
 		cell.addClass("mosaicTitle");
-		cell.html(timeFormatter.format(rowStart)
+		cell.html(timeFormatter.formatUTC(rowStart)
 				+ " <span class=\"small\">UTC</span>");
 
 		var cellEndMs = rowStart.getTime() + refreshPeriodMs;
@@ -423,8 +407,8 @@ function displayMosaic() {
 
 			var cellEnd = new Date(cellEndMs);
 			var url = network + "/" + subnet + "/"
-					+ pathFormatter.format(cellEnd) + "/" + subnet
-					+ fileFormatter.format(cellEnd) + "_thumb.png";
+					+ pathFormatter.formatUTC(cellEnd) + "/" + subnet
+					+ fileFormatter.formatUTC(cellEnd) + "_thumb.png";
 
 			var image = $(document.createElement('img'));
 			cell.append(image);
@@ -442,7 +426,7 @@ function displayMosaic() {
 		cell = $(document.createElement('td'));
 		row.append(cell);
 		cell.addClass("mosaicTitle");
-		cell.html(timeFormatter.format(new Date(rowEndMs))
+		cell.html(timeFormatter.formatUTC(new Date(rowEndMs))
 				+ " <span class=\"small\">UTC</span>");
 
 		rowStartMs += rowSpanMs;
@@ -483,7 +467,7 @@ function displayPlot() {
 
 	var network = $("#network option:selected").text();
 	var subnet = $("#" + network + "Subnets option:selected").text();
-	var url = network + "/" + subnet + "/" + pathFormatter.format(cellEnd)
-			+ "/" + subnet + fileFormatter.format(cellEnd) + ".png";
+	var url = network + "/" + subnet + "/" + pathFormatter.formatUTC(cellEnd)
+			+ "/" + subnet + fileFormatter.formatUTC(cellEnd) + ".png";
 	image.attr('src', url);
 }

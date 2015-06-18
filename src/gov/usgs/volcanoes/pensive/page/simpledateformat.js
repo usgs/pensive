@@ -157,7 +157,9 @@ var SimpleDateFormat;
 			DEFAULT_MINIMAL_DAYS_IN_FIRST_WEEK : this.minimalDaysInFirstWeek;
 	};
 
-	SimpleDateFormat.prototype.format = function(date) {
+	SimpleDateFormat.prototype.formatUTC = function(inDate) {
+		var date = new Date(inDate.getTime() + (inDate.getTimezoneOffset() * 60 * 1000));
+		
 		var formattedString = "";
 		var result;
 
@@ -308,5 +310,5 @@ var SimpleDateFormat;
 			searchString = searchString.substr(result.index + result[0].length);
 		}
 		return formattedString;
-	};
+	};	
 })();

@@ -36,7 +36,7 @@ public class Channel {
     private static final Logger LOGGER = LoggerFactory.getLogger(Channel.class);
 
     /** do I write data files? */
-    public static final boolean DEFAULT_WRITE_DATA = true;
+    public static final boolean DEFAULT_WRITE_DATA = false;
 
     /** Default format for data file suffix */
     public static final String DEFAULT_DATA_FILE_SUFFIX_FORMAT = "_yyyyMMdd";

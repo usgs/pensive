@@ -58,7 +58,12 @@ public class WaveSource implements Runnable {
 		int timeout = config.getInt("timeout", DEFAULT_TIMEOUT_S);
 		int compress = 1;
 
-		String dsString = name + ";" + type + ":" + host + ":" + port + ":" + timeout * 1000 + ":" + compress;
+		String dsString = null;
+		if (type.equals("wws"))
+	        dsString = name + ";" + type + ":" + host + ":" + port + ":" + timeout * 1000 + ":" + compress;		    
+		else if (type.equals("wsv"))
+		    dsString = name + ";ws:" + host + ":" + port + ":" + timeout * 1000 + ":1800:1000:UTC";
+		
 		dataSource = DataSourceType.parseConfig(dsString);
 		dataSource.establish();
 		dataSource.setUseCache(false);

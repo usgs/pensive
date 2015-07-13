@@ -3,9 +3,9 @@ package gov.usgs.volcanoes.pensive;
 import gov.usgs.swarm.data.DataSourceType;
 import gov.usgs.swarm.data.SeismicDataSource;
 import gov.usgs.util.ConfigFile;
-import gov.usgs.util.Time;
 import gov.usgs.volcanoes.pensive.plot.SubnetPlotter;
 
+import java.util.Date;
 import java.util.concurrent.BlockingQueue;
 
 import org.slf4j.Logger;
@@ -78,9 +78,15 @@ public class WaveSource implements Runnable {
 			PlotJob pj = null;
 			try {
 				pj = plotJobs.take();
+				if (pj.plotTimeMs > System.currentTimeMillis()) {
+				    plotJobs.put(pj);
+				    Thread.sleep(1000);
+				    continue;
+				}
+				
 				SubnetPlotter subnet = pj.subnet;
 
-				LOGGER.debug("Plotting subnet {} from {}", subnet.subnetName, name);
+				LOGGER.debug("Plotting subnet {} from {} scheduled for {}", subnet.subnetName, name, new Date(pj.plotTimeMs));
 				subnet.plot(pj.plotEndMs, dataSource);
 			} catch (InterruptedException noAction) {
 				continue;

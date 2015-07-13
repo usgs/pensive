@@ -1,7 +1,6 @@
 package gov.usgs.volcanoes.pensive;
 
 import gov.usgs.util.ConfigFile;
-import gov.usgs.util.Log;
 import gov.usgs.util.Util;
 import gov.usgs.volcanoes.pensive.page.Page;
 import gov.usgs.volcanoes.pensive.plot.SubnetPlotter;
@@ -9,7 +8,6 @@ import gov.usgs.volcanoes.pensive.plot.SubnetPlotter;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -17,18 +15,11 @@ import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.LogManager;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.martiansoftware.jsap.JSAP;
-import com.martiansoftware.jsap.JSAPResult;
-import com.martiansoftware.jsap.Parameter;
-import com.martiansoftware.jsap.SimpleJSAP;
-import com.martiansoftware.jsap.Switch;
-import com.martiansoftware.jsap.UnflaggedOption;
+import com.martiansoftware.jsap.JSAPException;
 
 /**
  * An application to produce a continuous collection of subnet spectrograms.
@@ -55,19 +46,6 @@ public class Pensive {
 
     /** One plot scheduler per wave server */
     private Map<String, PlotScheduler> plotScheduler;
-
-    // JSAP related stuff.
-    public static final String JSAP_PROGRAM_NAME = "java -jar net.stash.pensive.Pensive";
-    public static final String JSAP_EXPLANATION_PREFACE = "I am the Pensive server";
-
-    private static final String DEFAULT_JSAP_EXPLANATION = "\n";
-
-    private static final Parameter[] DEFAULT_JSAP_PARAMETERS = new Parameter[] {
-            new Switch("create-config", 'c', "create-config",
-                    "Create an example config file in the curent working directory."),
-            new Switch("verbose", 'v', "verbose", "Verbose logging."),
-            new UnflaggedOption("configFilename", JSAP.STRING_PARSER, DEFAULT_CONFIG_FILENAME, JSAP.NOT_REQUIRED,
-                    JSAP.NOT_GREEDY, "The config file name.") };
 
     /**
      * Class constructor
@@ -190,28 +168,6 @@ public class Pensive {
         }
     }
 
-    public static JSAPResult getArguments(String[] args) {
-        JSAPResult config = null;
-        try {
-            SimpleJSAP jsap = new SimpleJSAP(JSAP_PROGRAM_NAME, JSAP_EXPLANATION_PREFACE + DEFAULT_JSAP_EXPLANATION,
-                    DEFAULT_JSAP_PARAMETERS);
-
-            config = jsap.parse(args);
-            if (jsap.messagePrinted()) {
-                // The following error message is useful for catching the case
-                // when args are missing, but help isn't printed.
-                if (!config.getBoolean("help"))
-                    System.err.println("Try using the --help flag.");
-
-                System.exit(1);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            System.exit(1);
-        }
-        return config;
-    }
-
     public static void createConfig() throws IOException {
 
         InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream("pensive-example.config");
@@ -249,9 +205,15 @@ public class Pensive {
      * @param args
      */
     public static void main(String[] args) {
-        JSAPResult config = getArguments(args);
+        Args config = null;
+        try {
+            config = new Args(args);
+        } catch (JSAPException e1) {
+            System.err.println("Couldn't parse command line. Try using the --help flag.");
+            System.exit(1);
+        }
 
-        if (config.getBoolean("create-config")) {
+        if (config.createConfig) {
             try {
                 LOGGER.warn("Creating example config " + DEFAULT_CONFIG_FILENAME);
                 Pensive.createConfig();
@@ -261,10 +223,9 @@ public class Pensive {
             System.exit(0);
         }
 
-        String fn = config.getString("configFilename");
-        ConfigFile cf = new ConfigFile(fn);
+        ConfigFile cf = new ConfigFile(config.configFileName);
         if (!cf.wasSuccessfullyRead()) {
-            LOGGER.warn("Can't parse config file " + fn + ". Try using the --help flag.");
+            LOGGER.warn("Can't parse config file " + config.configFileName + ". Try using the --help flag.");
             System.exit(1);
         }
 

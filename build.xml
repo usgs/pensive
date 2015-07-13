@@ -2,7 +2,7 @@
 	<description>USGS Swarm Build File</description>
 
 	<property name="package" value="gov.usgs.volcanoes.pensive"/>
-	<property name="version" value="1.1.8"/>
+	<property name="version" value="1.2"/>
 	<property name="jarfile" value="pensive-${version}.jar" />
 	<property name="classpath" location="../USGS/contrib/jtransforms-2.4.jar;../USGS/lib/swarm.jar;../USGS/lib/plot.jar;../USGS/lib/util.jar;../USGS/contrib/freemarker.jar;../USGS/contrib/JSAP-2.1.jar;../USGS/contrib/slf4j-api-1.7.1.jar;../USGS/contrib/slf4j-log4j12-1.7.1.jar" />
 	<property name="source" location="." />

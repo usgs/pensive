@@ -8,13 +8,20 @@ import com.martiansoftware.jsap.SimpleJSAP;
 import com.martiansoftware.jsap.Switch;
 import com.martiansoftware.jsap.UnflaggedOption;
 
+/**
+ * Argument processor for Pensive
+ * 
+ * @author Tom Parker
+ * 
+ *         I waive copyright and related rights in the this work worldwide
+ *         through the CC0 1.0 Universal public domain dedication.
+ *         https://creativecommons.org/publicdomain/zero/1.0/legalcode
+ */
 public class Args extends SimpleJSAP {
 
     public static final String DEFAULT_CONFIG_FILENAME = "pensive.config";
     public static final String PROGRAM_NAME = "java -jar net.stash.pensive.Pensive";
-    public static final String EXPLANATION_PREFACE = "I am the Pensive server";
-
-    private static final String EXPLANATION = "\n";
+    public static final String EXPLANATION = "I am the Pensive server\n";
 
     private static final Parameter[] PARAMETERS = new Parameter[] {
             new Switch("create-config", 'c', "create-config",

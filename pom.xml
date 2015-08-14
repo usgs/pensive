@@ -36,6 +36,7 @@
               <goal>shade</goal>
             </goals>
             <configuration>
+	    <minimizeJar>true</minimizeJar>
               <artifactSet>
                 <includes>
                   <include>gov.usgs.volcanoes:usgs</include>

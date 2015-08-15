@@ -72,7 +72,6 @@ public class WaveSource implements Runnable {
 	/**
 	 * Take plot jobs and produce files.
 	 */
-	@Override
 	public void run() {
 		while (true) {
 			PlotJob pj = null;

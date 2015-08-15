@@ -106,7 +106,6 @@ public class PlotScheduler implements Runnable {
      * Schedule the next set of plots. Try to catch all exceptions,
      * ScheduledExecutorService does the wrong thing with exceptions.
      */
-    @Override
     public void run() {
         try {
             LOGGER.info("Scheduling plots for " + name);

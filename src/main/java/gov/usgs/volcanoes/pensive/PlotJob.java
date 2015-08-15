@@ -73,7 +73,6 @@ public class PlotJob implements Comparable<PlotJob> {
 	 * @param o
 	 *     The PlotJob to compare to
 	 */
-	@Override
 	public int compareTo(PlotJob o) {
 		return (int) (plotTimeMs - o.plotTimeMs);
 	}

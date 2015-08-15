@@ -2,7 +2,6 @@ package gov.usgs.volcanoes.pensive;
 
 import gov.usgs.util.ConfigFile;
 import gov.usgs.util.Util;
-import gov.usgs.volcanoes.pensive.page.Page;
 import gov.usgs.volcanoes.pensive.plot.SubnetPlotter;
 
 import java.io.FileOutputStream;

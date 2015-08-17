@@ -91,7 +91,7 @@ public class PlotScheduler implements Runnable {
     /**
      * Schedule the next plot for each subnet.
      */
-    public void schedulePlots() {
+    private void schedulePlots() {
         for (SubnetPlotter subnet : subnets) {
             try {
                 LOGGER.info("Scheduling subnet " + subnet.subnetName);

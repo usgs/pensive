@@ -36,7 +36,21 @@
               <goal>shade</goal>
             </goals>
             <configuration>
-	    <minimizeJar>true</minimizeJar>
+	    <minimizeJar>true</minimizeJar> 
+            <filters>
+              <filter>
+                <artifact>org.apache:log4j</artifact>
+                <includes>
+                  <include>org/apache/log4j/**</include>
+                </includes>
+              </filter>
+              <filter>
+                <artifact>org.freemarker:freemarker</artifact>
+                <includes>
+                  <include>freemarker/**</include>
+                </includes>
+              </filter>
+            </filters>
               <artifactSet>
                 <includes>
                   <include>gov.usgs.volcanoes:usgs</include>

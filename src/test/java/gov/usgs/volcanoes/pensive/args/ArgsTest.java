@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -24,6 +25,7 @@ public class ArgsTest {
 
         args = new Args(commandLineArgs);
         format = new SimpleDateFormat(DateStringParser.INPUT_TIME_FORMAT);
+        format.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
 
     @Test

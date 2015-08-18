@@ -125,9 +125,11 @@ public class Channel {
             w.removeMean();
             wave = new SliceWave(w);
             wave.setSlice(t1, t2);
+            plot.setWave(wave);
+            wave = new SliceWave(w);
+            wave.setSlice(t1, t2);
+            thumb.setWave(wave);
         }
-        plot.setWave(wave);
-        thumb.setWave(wave);
     }
 
     /**

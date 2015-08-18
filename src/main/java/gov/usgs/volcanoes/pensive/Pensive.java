@@ -1,12 +1,9 @@
 package gov.usgs.volcanoes.pensive;
 
-import gov.usgs.util.ConfigFile;
-import gov.usgs.util.Util;
-import gov.usgs.volcanoes.pensive.plot.SubnetPlotter;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -19,6 +16,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.martiansoftware.jsap.JSAPException;
+
+import gov.usgs.util.ConfigFile;
+import gov.usgs.util.Util;
+import gov.usgs.volcanoes.pensive.args.Args;
+import gov.usgs.volcanoes.pensive.plot.SubnetPlotter;
+import gov.usgs.volcanoes.pensive.schedule.AbstractPlotScheduler;
+import gov.usgs.volcanoes.pensive.schedule.BackfillPlotScheduler;
+import gov.usgs.volcanoes.pensive.schedule.RealtimePlotScheduler;
 
 /**
  * An application to produce a continuous collection of subnet spectrograms.
@@ -44,7 +49,7 @@ public class Pensive {
     private Page page;
 
     /** One plot scheduler per wave server */
-    private Map<String, PlotScheduler> plotScheduler;
+    private Map<String, AbstractPlotScheduler> plotScheduler;
 
     /**
      * Class constructor
@@ -61,26 +66,45 @@ public class Pensive {
 
         page = new Page(configFile);
 
-        createPlotSchedulers();
-        assignSubnets();
-        pruneSchedulers();
-
         boolean writeHtml = configFile.getBoolean("writeHtml", DEFAULT_WRITE_HTML);
         if (writeHtml)
             page.writeHTML();
+    }
+
+    public Pensive(ConfigFile configFile, Date startTime, Date endTime) {
+        super();
     }
 
     /**
      * Create one PlotScheduler per wave server, each running in its own thread.
      */
     private void createPlotSchedulers() {
-        plotScheduler = new HashMap<String, PlotScheduler>();
+        plotScheduler = new HashMap<String, AbstractPlotScheduler>();
 
         for (String server : configFile.getList("waveSource")) {
             ConfigFile c = configFile.getSubConfig(server, true);
             LOGGER.info("Creating plot scheduler for " + server);
-            plotScheduler.put(server, new PlotScheduler(server, c));
+            plotScheduler.put(server, new RealtimePlotScheduler(server, c));
         }
+        assignSubnets();
+        pruneSchedulers();
+    }
+
+    /**
+     * Create one PlotScheduler per wave server, each running in its own thread.
+     */
+    private void createPlotSchedulers(Date startTime, Date endTime) {
+        plotScheduler = new HashMap<String, AbstractPlotScheduler>();
+
+        for (String server : configFile.getList("waveSource")) {
+            ConfigFile c = configFile.getSubConfig(server, true);
+            LOGGER.info("Creating plot scheduler for " + server);
+            BackfillPlotScheduler ps = new BackfillPlotScheduler(server, c);
+            ps.setRange(startTime, endTime);
+            plotScheduler.put(server, ps);
+        }
+        assignSubnets();
+        pruneSchedulers();
     }
 
     /**
@@ -115,7 +139,7 @@ public class Pensive {
                 }
 
                 String dataSource = subnetConfig.getString("dataSource");
-                PlotScheduler scheduler = plotScheduler.get(dataSource);
+                AbstractPlotScheduler scheduler = plotScheduler.get(dataSource);
                 LOGGER.info("Assigning subnet " + subnet + " to " + dataSource);
                 scheduler.add(new SubnetPlotter(network, subnet, subnetConfig));
             }
@@ -126,7 +150,7 @@ public class Pensive {
         Iterator<String> schedulerIt = plotScheduler.keySet().iterator();
         while (schedulerIt.hasNext()) {
             String server = schedulerIt.next();
-            PlotScheduler ps = plotScheduler.get(server);
+            AbstractPlotScheduler ps = plotScheduler.get(server);
             if (ps.subnetCount() < 1) {
                 LOGGER.warn("No subnets feeding from " + ps.name + ". I'll prune it.");
                 schedulerIt.remove();
@@ -141,7 +165,7 @@ public class Pensive {
         Iterator<String> schedulerIt = plotScheduler.keySet().iterator();
         while (schedulerIt.hasNext()) {
             String server = schedulerIt.next();
-            PlotScheduler ps = plotScheduler.get(server);
+            AbstractPlotScheduler ps = plotScheduler.get(server);
             if (ps.subnetCount() < 1) {
                 LOGGER.warn("No subnets feeding from " + ps.name + ". I'll prune it.");
                 schedulerIt.remove();
@@ -154,16 +178,18 @@ public class Pensive {
      */
     private void schedulePlots() {
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-        for (PlotScheduler ps : plotScheduler.values()) {
+        for (AbstractPlotScheduler ps : plotScheduler.values()) {
 
             // schedule first plot immediately
             new Thread(ps).start();
 
-            // satrt automated plots at the top of the next period
-            int delay = SubnetPlotter.DURATION_S;
-            delay -= (System.currentTimeMillis() / 1000) % SubnetPlotter.DURATION_S;
-            LOGGER.debug("Scheduled plots start in " + delay + "ms");
-            scheduler.scheduleAtFixedRate(ps, delay, SubnetPlotter.DURATION_S, TimeUnit.SECONDS);
+            if (ps instanceof RealtimePlotScheduler) {
+                // satrt automated plots at the top of the next period
+                int delay = SubnetPlotter.DURATION_S;
+                delay -= (System.currentTimeMillis() / 1000) % SubnetPlotter.DURATION_S;
+                LOGGER.debug("Scheduled plots start in " + delay + "ms");
+                scheduler.scheduleAtFixedRate(ps, delay, SubnetPlotter.DURATION_S, TimeUnit.SECONDS);
+            }
         }
     }
 
@@ -188,14 +214,7 @@ public class Pensive {
      * @return version string
      */
     public static String getVersion() {
-        String[] v = Util.getVersion(Pensive.class.getPackage().getName());
-        String version;
-        if (v != null)
-            version = "Version: " + v[0] + " Built: " + v[1];
-        else
-            version = "No version information available.";
-
-        return version;
+        return "Version: " + Version.pomversion + " Built: " + Version.build_time;
     }
 
     /**
@@ -229,6 +248,12 @@ public class Pensive {
         }
 
         Pensive pensive = new Pensive(cf);
+
+        if (config.startTime == null)
+            pensive.createPlotSchedulers();
+        else
+            pensive.createPlotSchedulers(config.startTime, config.endTime);
+
         pensive.schedulePlots();
     }
 }

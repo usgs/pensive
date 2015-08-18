@@ -27,20 +27,6 @@ public class PlotJob implements Comparable<PlotJob> {
 	/** my subnet */
 	public final SubnetPlotter subnet;
 
-	/**
-	 * Class constructor
-	 * 
-	 * @param plotEnd
-	 *            Time of last sample to me plotted
-	 * @param subnet
-	 *            My subnet
-	 */
-	public PlotJob(SubnetPlotter subnet, long plotEndMs) {
-		this.plotEndMs = plotEndMs;
-		this.subnet = subnet;
-		
-		plotTimeMs = plotEndMs + subnet.embargoMs;
-	}
 
 	/**
 	 * Class constructor which uses the most recent time slice as the time of
@@ -54,6 +40,12 @@ public class PlotJob implements Comparable<PlotJob> {
 		this.plotEndMs = findPlotEnd();
 		plotTimeMs = plotEndMs + subnet.embargoMs;
 	}
+
+   public PlotJob(SubnetPlotter subnet, long plotEndMs) {
+	        this.subnet = subnet;
+	        this.plotEndMs = plotEndMs;
+	        plotTimeMs = plotEndMs + subnet.embargoMs;
+	    }
 
 	/**
 	 * Calculate the time of the last sample in the most recent time slice.

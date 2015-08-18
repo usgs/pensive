@@ -1,9 +1,6 @@
-package gov.usgs.volcanoes.pensive;
+package gov.usgs.volcanoes.pensive.schedule;
 
-import gov.usgs.util.ConfigFile;
-import gov.usgs.util.Pool;
-import gov.usgs.volcanoes.pensive.plot.SubnetPlotter;
-
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
@@ -11,6 +8,12 @@ import java.util.concurrent.LinkedBlockingQueue;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import gov.usgs.util.ConfigFile;
+import gov.usgs.util.Pool;
+import gov.usgs.volcanoes.pensive.PlotJob;
+import gov.usgs.volcanoes.pensive.WaveSource;
+import gov.usgs.volcanoes.pensive.plot.SubnetPlotter;
 
 /**
  * Create a pool of connections to a single server and assign plot jobs to
@@ -22,10 +25,10 @@ import org.slf4j.LoggerFactory;
  *         through the CC0 1.0 Universal public domain dedication.
  *         https://creativecommons.org/publicdomain/zero/1.0/legalcode
  */
-public class PlotScheduler implements Runnable {
+public abstract class AbstractPlotScheduler implements Runnable {
 
     /** my logger */
-    private static final Logger LOGGER = LoggerFactory.getLogger("gov.usgs");
+    protected static final Logger LOGGER = LoggerFactory.getLogger("gov.usgs");
 
     /** number of concurrent connection to the wave server */
     public static final int DEFAULT_NUMTHREADS = 5;
@@ -34,10 +37,10 @@ public class PlotScheduler implements Runnable {
     private final Pool<WaveSource> plotter;
 
     /** Queue of plot jobs awaiting an available plotter */
-    private final BlockingQueue<PlotJob> plotJobs;
+    protected final BlockingQueue<PlotJob> plotJobs;
 
     /** list of subnets that feed from my wave server */
-    private final List<SubnetPlotter> subnets;
+    protected final List<SubnetPlotter> subnets;
 
     /** number of connections to my wave server */
     private final int numThreads;
@@ -45,6 +48,12 @@ public class PlotScheduler implements Runnable {
     /** name of this server */
     public final String name;
 
+    private Date startDate;
+    
+    private Date endDate;
+    
+    abstract protected void schedulePlots();
+    
     /**
      * Class constructor
      * 
@@ -53,7 +62,7 @@ public class PlotScheduler implements Runnable {
      * @param config
      *            My configuration stanza
      */
-    public PlotScheduler(String name, ConfigFile config) {
+    public AbstractPlotScheduler(String name, ConfigFile config) {
 
         this.name = name;
         numThreads = config.getInt("threads", DEFAULT_NUMTHREADS);
@@ -88,20 +97,7 @@ public class PlotScheduler implements Runnable {
         return subnets.size();
     }
 
-    /**
-     * Schedule the next plot for each subnet.
-     */
-    private void schedulePlots() {
-        for (SubnetPlotter subnet : subnets) {
-            try {
-                LOGGER.info("Scheduling subnet " + subnet.subnetName);
-                plotJobs.put(new PlotJob(subnet));
-            } catch (InterruptedException e) {
-                LOGGER.info("Interrupted. Unable to schedule " + subnet.subnetName);
-            }
-        }
-    }
-
+     
     /**
      * Schedule the next set of plots. Try to catch all exceptions,
      * ScheduledExecutorService does the wrong thing with exceptions.

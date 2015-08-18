@@ -83,7 +83,7 @@ public class WaveSource implements Runnable {
 	 */
 	public void run() {
 		shouldRun = true;
-		while (shouldRun && !plotJobs.isEmpty()) {
+		while (shouldRun || !plotJobs.isEmpty()) {
 			PlotJob pj = null;
 			try {
 				pj = plotJobs.take();

@@ -36,6 +36,7 @@ public abstract class AbstractPlotScheduler implements Runnable {
     /** pool of plotters, each with their own wave server connection */
     private List<WaveSource> waveSources;
 
+    private List<Thread> threads;
     
     /** Queue of plot jobs awaiting an available plotter */
     protected final BlockingQueue<PlotJob> plotJobs;
@@ -69,6 +70,7 @@ public abstract class AbstractPlotScheduler implements Runnable {
         numThreads = config.getInt("threads", DEFAULT_NUMTHREADS);
         subnets = new LinkedList<SubnetPlotter>();
         plotJobs = new LinkedBlockingQueue<PlotJob>();
+        threads = new LinkedList<Thread>();
 
         startThreads(config);
     }
@@ -85,6 +87,7 @@ public abstract class AbstractPlotScheduler implements Runnable {
             Thread t = new Thread(ws);
             t.setName(n);
             t.start();
+            threads.add(t);
         }
     	
     }
@@ -109,6 +112,9 @@ public abstract class AbstractPlotScheduler implements Runnable {
     	for (WaveSource ws : waveSources) {
     		ws.stop();
     	}
+    	
+    	for(Thread thread : threads)
+    		thread.interrupt();
     }
      
     /**

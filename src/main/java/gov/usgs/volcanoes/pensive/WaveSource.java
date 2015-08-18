@@ -29,6 +29,8 @@ public class WaveSource implements Runnable {
 	public static final int DEFAULT_PORT = 16022;
 	public static final int DEFAULT_TIMEOUT_S = 15;
 
+	private boolean shouldRun;
+	
 	/** source of wave data */
 	private final SeismicDataSource dataSource;
 
@@ -70,10 +72,18 @@ public class WaveSource implements Runnable {
 	}
 
 	/**
+	 * stop thread
+	 */
+	public void stop() {
+		shouldRun = false;
+	}
+	
+	/**
 	 * Take plot jobs and produce files.
 	 */
 	public void run() {
-		while (true) {
+		shouldRun = true;
+		while (shouldRun && !plotJobs.isEmpty()) {
 			PlotJob pj = null;
 			try {
 				pj = plotJobs.take();

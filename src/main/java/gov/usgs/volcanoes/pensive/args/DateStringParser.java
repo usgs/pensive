@@ -1,5 +1,6 @@
 package gov.usgs.volcanoes.pensive.args;
 import java.text.SimpleDateFormat;
+import java.util.TimeZone;
 
 import com.martiansoftware.jsap.ParseException;
 import com.martiansoftware.jsap.StringParser;
@@ -39,6 +40,7 @@ public class DateStringParser extends StringParser {
     private DateStringParser() {
         super();
         format = new SimpleDateFormat(INPUT_TIME_FORMAT);
+//        format.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
 
     /**

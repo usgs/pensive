@@ -10,8 +10,8 @@
   <url>http://volcanoes.usgs.gov/software/pensive</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <version.template.file>src/main/resources/Version.java.template</version.template.file>
-    <version.file>src/main/java/gov/usgs/volcanoes/pensive/Version.java</version.file>
+    <version.template.file>src/main/resources/PensiveVersion.java.template</version.template.file>
+    <version.file>src/main/java/gov/usgs/volcanoes/pensive/PensiveVersion.java</version.file>
   </properties>
 
   <developers>
@@ -134,7 +134,7 @@
 				  </goals>
 				</pluginExecutionFilter>
 				<action>
-				  <ignore />
+				  <execute />
 				</action>
 				<comment>source: </comment>
 			  </pluginExecution>

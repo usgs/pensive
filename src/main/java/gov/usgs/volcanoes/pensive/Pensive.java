@@ -61,7 +61,7 @@ public class Pensive {
         this.configFile = configFile;
         long now = System.currentTimeMillis();
         configFile.put("applicationLaunch", "" + now);
-        LOGGER.info("Launching Pensive ({})", Pensive.getVersion());
+        LOGGER.info("Launching Pensive ({})", PensiveVersion.VERSION_STRING);
 
         page = new Page(configFile);
 
@@ -213,14 +213,6 @@ public class Pensive {
     		ps.stop();
     }
     
-    /**
-     * 
-     * @return version string
-     */
-    public static String getVersion() {
-        return "Version: " + Version.pomversion + " Built: " + Version.build_time;
-    }
-
     /**
      * Where it all begins
      * 

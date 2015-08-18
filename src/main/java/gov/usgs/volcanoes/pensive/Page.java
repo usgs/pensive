@@ -68,7 +68,7 @@ public class Page {
         root.put("filePathFormat", config.getString("filePathFormat", SubnetPlotter.DEFAULT_FILE_PATH_FORMAT));
         root.put("fileSuffixFormat", config.getString("fileSuffixFormat", SubnetPlotter.DEFAULT_FILE_SUFFIX_FORMAT));
         root.put("selectedNetwork", config.getString("selectedNetwork"));
-//        root.put("version", PensiveVersion.VERSION_STRING);
+        root.put("version", PensiveVersion.VERSION_STRING);
         
         try {
             initializeTemplateEngine();

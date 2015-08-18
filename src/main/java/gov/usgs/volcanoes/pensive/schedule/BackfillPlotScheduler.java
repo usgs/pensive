@@ -35,7 +35,7 @@ public class BackfillPlotScheduler extends AbstractPlotScheduler {
         for (SubnetPlotter subnet : subnets) {
             try {        
                 for (long plotTime = firstPlot; plotTime <= lastPlot; plotTime += duration) {
-                    LOGGER.info("Scheduling subnet " + subnet.subnetName + " (" + new Date(plotTime) + " - " + new Date(plotTime + duration) + ")");
+                    LOGGER.info("Scheduling subnet " + subnet.subnetName + " (" + new Date(plotTime - duration)  + " - " + new Date(plotTime) + ")");
                     plotJobs.put(new PlotJob(subnet, plotTime));
                 }
             } catch (InterruptedException e) {

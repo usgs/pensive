@@ -11,12 +11,56 @@
       <id>tparker</id>
       <name>Tom Parker</name>
       <email>tparker@usgs.gov</email>
+      <organization>U.S. Geological Survey, Alaska Volcano Observatory</organization>
       <properties>
         <active>true</active>
       </properties>
     </developer>
   </developers>
+  <licenses>
+    <license>
+      <name>CC0 1.0 Universal</name>
+      <url>http://www.martiansoftware.com/jsap/license.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
   <build>
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-ssh-external</artifactId>
+        <version>1.0-beta-6</version>
+      </extension>
+    </extensions>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version>
+          <configuration>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>com.google.code.maven-replacer-plugin</groupId>
+                    <artifactId>maven-replacer-plugin</artifactId>
+                    <versionRange>1.4.0</versionRange>
+                    <goals>
+                      <goal>replace</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <execute />
+                  </action>
+                  <comment>source:</comment>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
     <plugins>
       <plugin>
         <artifactId>maven-shade-plugin</artifactId>
@@ -111,9 +155,16 @@
       <url>http://volcanoes.usgs.gov/software/maven2/</url>
     </repository>
   </repositories>
+  <distributionManagement>
+    <repository>
+      <id>volcanoes.web</id>
+      <name>Volcanoes website</name>
+      <url>scpexe://vulcan4.wr.usgs.gov/webdata/volcanoes.usgs.gov/htdocs/software/maven2</url>
+    </repository>
+  </distributionManagement>
   <properties>
-    <version.template.file>src/main/resources/Version.java.template</version.template.file>
-    <version.file>src/main/java/gov/usgs/volcanoes/pensive/Version.java</version.file>
+    <version.template.file>src/main/resources/PensiveVersion.java.template</version.template.file>
+    <version.file>src/main/java/gov/usgs/volcanoes/pensive/PensiveVersion.java</version.file>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 </project>

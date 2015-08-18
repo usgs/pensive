@@ -20,8 +20,7 @@
       <url>http://www.martiansoftware.com/jsap/license.html</url>
       <distribution>repo</distribution>
     </license>
-  </licenses>
-  
+  </licenses>  
 
   <developers>
     <developer>
@@ -35,11 +34,19 @@
     </developer>
   </developers>
   
+  <distributionManagement>
+    <repository>
+      <id>volcanoes.web</id>
+      <name>Volcanoes website</name>
+      <url>scpexe://vulcan4.wr.usgs.gov/webdata/volcanoes.usgs.gov/htdocs/software/maven2</url>
+    </repository>
+  </distributionManagement>
+ 
   <build>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-	<artifactId>maven-shade-plugin</artifactId>
+	      <artifactId>maven-shade-plugin</artifactId>
       	<version>2.4.1</version>
         <executions>
           <execution>
@@ -154,6 +161,13 @@
     </plugins>
     </pluginManagement>
     
+    <extensions>
+      <extension>
+        <groupId>org.apache.maven.wagon</groupId>
+        <artifactId>wagon-ssh-external</artifactId>
+        <version>1.0-beta-6</version>
+      </extension>
+    </extensions>
   </build>
 
   <repositories>

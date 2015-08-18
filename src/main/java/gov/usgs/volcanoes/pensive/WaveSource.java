@@ -7,6 +7,7 @@ import gov.usgs.volcanoes.pensive.plot.SubnetPlotter;
 
 import java.util.Date;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,9 +52,10 @@ public class WaveSource implements Runnable {
 	 *            My config stanza
 	 */
 	public WaveSource(String name, BlockingQueue<PlotJob> plotJobs, ConfigFile config) {
-		this.plotJobs = plotJobs;
-
+		shouldRun = true;
+	    this.plotJobs = plotJobs;
 		this.name = name;
+		
 		String type = config.getString("type", DEFAULT_TYPE);
 		String host = config.getString("host", DEFAULT_HOST);
 		int port = config.getInt("port", DEFAULT_PORT);
@@ -82,11 +84,12 @@ public class WaveSource implements Runnable {
 	 * Take plot jobs and produce files.
 	 */
 	public void run() {
-		shouldRun = true;
 		while (shouldRun || !plotJobs.isEmpty()) {
 			PlotJob pj = null;
 			try {
-				pj = plotJobs.take();
+			    pj = plotJobs.poll(2, TimeUnit.SECONDS);
+			    if (pj == null)
+			        continue;
 				if (pj.plotTimeMs > System.currentTimeMillis()) {
 				    plotJobs.put(pj);
 				    Thread.sleep(1000);
@@ -101,5 +104,6 @@ public class WaveSource implements Runnable {
 				continue;
 			}
 		}
+		LOGGER.debug("Exiting WaveSource thread ({}). Job queue: {}", name, plotJobs.size());
 	}
 }

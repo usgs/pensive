@@ -92,6 +92,7 @@ public class Pensive {
         assignSubnets();
         pruneSchedulers();
         schedulePlots();
+        startWaveSources();
     }
 
     /**
@@ -110,6 +111,12 @@ public class Pensive {
         assignSubnets();
         pruneSchedulers();
         schedulePlots();
+        startWaveSources();
+    }
+
+    private void startWaveSources() {
+        for (AbstractPlotScheduler ps : plotScheduler.values())
+            ps.startWaveSources();
     }
 
     /**
@@ -182,13 +189,13 @@ public class Pensive {
      * Schedule a recurring call to produce plot jobs.
      */
     private void schedulePlots() {
-        ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
         for (AbstractPlotScheduler ps : plotScheduler.values()) {
 
             // schedule first plot immediately
-            new Thread(ps).start();
+           new Thread(ps).start();
 
             if (ps instanceof RealtimePlotScheduler) {
+                ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
                 // satrt automated plots at the top of the next period
                 int delay = SubnetPlotter.DURATION_S;
                 delay -= (System.currentTimeMillis() / 1000) % SubnetPlotter.DURATION_S;
@@ -261,11 +268,6 @@ public class Pensive {
             pensive.createRealtimePlotSchedulers();
         else {
             pensive.createBackfillPlotSchedulers(config.startTime, config.endTime);
-            // TODO: why does stop have to wait?
-            try {
-                Thread.currentThread().sleep(2000);
-            } catch (InterruptedException ignore) {
-            }
             pensive.stop();
         }
         pensive.writeWebApp();

@@ -54,6 +54,8 @@ public abstract class AbstractPlotScheduler implements Runnable {
     
     private Date endDate;
     
+    private ConfigFile config;
+    
     abstract protected void schedulePlots();
     
     /**
@@ -71,14 +73,13 @@ public abstract class AbstractPlotScheduler implements Runnable {
         subnets = new LinkedList<SubnetPlotter>();
         plotJobs = new LinkedBlockingQueue<PlotJob>();
         threads = new LinkedList<Thread>();
-
-        startThreads(config);
+        this.config = config;
     }
 
     /**
      * Start threads
      */
-    private void startThreads(ConfigFile config) {
+    public void startWaveSources() {
         waveSources = new ArrayList<WaveSource>();
         for (int i = 0; i < numThreads; i++) {
             String n = name + "-" + i;
@@ -112,9 +113,6 @@ public abstract class AbstractPlotScheduler implements Runnable {
     	for (WaveSource ws : waveSources) {
     		ws.stop();
     	}
-    	
-    	for(Thread thread : threads)
-    		thread.interrupt();
     }
      
     /**

@@ -25,12 +25,16 @@ public class BackfillPlotScheduler extends AbstractPlotScheduler {
      */
     protected void schedulePlots() {
         long duration = SubnetPlotter.DURATION_S * 1000;
-        long start = startTime.getTime() - (startTime.getTime() % duration);
-        long end = endTime.getTime();
+        long firstPlot = startTime.getTime() - (startTime.getTime() % duration) + duration;
+        long lastPlot = endTime.getTime();
+        long offset = endTime.getTime() % duration;
+        if (offset > 0)
+            lastPlot += duration - offset;
 
+        LOGGER.debug("Scheduling backfill plots ({} - {})", new Date(firstPlot), new Date(lastPlot));
         for (SubnetPlotter subnet : subnets) {
             try {        
-                for (long plotTime = start; plotTime < end; plotTime += duration) {
+                for (long plotTime = firstPlot; plotTime <= lastPlot; plotTime += duration) {
                     LOGGER.info("Scheduling subnet " + subnet.subnetName + " (" + new Date(plotTime) + " - " + new Date(plotTime + duration) + ")");
                     plotJobs.put(new PlotJob(subnet, plotTime));
                 }

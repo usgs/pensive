@@ -40,7 +40,7 @@ public class DateStringParser extends StringParser {
     private DateStringParser() {
         super();
         format = new SimpleDateFormat(INPUT_TIME_FORMAT);
-//        format.setTimeZone(TimeZone.getTimeZone("UTC"));
+        format.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
 
     /**

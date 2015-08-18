@@ -1,5 +1,6 @@
 package gov.usgs.volcanoes.pensive.schedule;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import gov.usgs.util.ConfigFile;
-import gov.usgs.util.Pool;
 import gov.usgs.volcanoes.pensive.PlotJob;
 import gov.usgs.volcanoes.pensive.WaveSource;
 import gov.usgs.volcanoes.pensive.plot.SubnetPlotter;
@@ -34,8 +34,9 @@ public abstract class AbstractPlotScheduler implements Runnable {
     public static final int DEFAULT_NUMTHREADS = 5;
 
     /** pool of plotters, each with their own wave server connection */
-    private final Pool<WaveSource> plotter;
+    private List<WaveSource> waveSources;
 
+    
     /** Queue of plot jobs awaiting an available plotter */
     protected final BlockingQueue<PlotJob> plotJobs;
 
@@ -69,17 +70,24 @@ public abstract class AbstractPlotScheduler implements Runnable {
         subnets = new LinkedList<SubnetPlotter>();
         plotJobs = new LinkedBlockingQueue<PlotJob>();
 
-        plotter = new Pool<WaveSource>();
+        startThreads(config);
+    }
+
+    /**
+     * Start threads
+     */
+    private void startThreads(ConfigFile config) {
+        waveSources = new ArrayList<WaveSource>();
         for (int i = 0; i < numThreads; i++) {
             String n = name + "-" + i;
-            WaveSource p = new WaveSource(n, plotJobs, config);
-            plotter.checkin(p);
-            Thread t = new Thread(p);
+            WaveSource ws = new WaveSource(n, plotJobs, config);
+            waveSources.add(ws);
+            Thread t = new Thread(ws);
             t.setName(n);
             t.start();
         }
+    	
     }
-
     /**
      * 
      * @param subnet
@@ -97,6 +105,11 @@ public abstract class AbstractPlotScheduler implements Runnable {
         return subnets.size();
     }
 
+    public void stop() {
+    	for (WaveSource ws : waveSources) {
+    		ws.stop();
+    	}
+    }
      
     /**
      * Schedule the next set of plots. Try to catch all exceptions,

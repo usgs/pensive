@@ -18,7 +18,6 @@ import org.slf4j.LoggerFactory;
 import com.martiansoftware.jsap.JSAPException;
 
 import gov.usgs.util.ConfigFile;
-import gov.usgs.util.Util;
 import gov.usgs.volcanoes.pensive.args.Args;
 import gov.usgs.volcanoes.pensive.plot.SubnetPlotter;
 import gov.usgs.volcanoes.pensive.schedule.AbstractPlotScheduler;
@@ -209,6 +208,11 @@ public class Pensive {
         }
     }
 
+    public void stop() {
+    	for (AbstractPlotScheduler ps : plotScheduler.values()) 
+    		ps.stop();
+    }
+    
     /**
      * 
      * @return version string
@@ -249,11 +253,15 @@ public class Pensive {
 
         Pensive pensive = new Pensive(cf);
 
-        if (config.startTime == null)
+        if (config.startTime == null) 
             pensive.createPlotSchedulers();
         else
             pensive.createPlotSchedulers(config.startTime, config.endTime);
 
         pensive.schedulePlots();
+        
+        if (config.startTime != null)
+        	pensive.stop();
+
     }
 }

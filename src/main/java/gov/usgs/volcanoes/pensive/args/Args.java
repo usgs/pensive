@@ -24,7 +24,7 @@ import com.martiansoftware.jsap.UnflaggedOption;
 public class Args extends SimpleJSAP {
 
     public static final String DEFAULT_CONFIG_FILENAME = "pensive.config";
-    public static final String PROGRAM_NAME = "java -jar net.stash.pensive.Pensive";
+    public static final String PROGRAM_NAME = "java -jar gov.usgs.volcanoes.pensive.Pensive";
     public static final String EXPLANATION = "I am the Pensive server\n";
 
     private static final StringParser DATE_PARSER = DateStringParser.getParser();

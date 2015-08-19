@@ -263,7 +263,6 @@ public class Pensive {
         }
 
         Pensive pensive = new Pensive(cf);
-
         if (config.startTime == null)
             pensive.createRealtimePlotSchedulers();
         else {

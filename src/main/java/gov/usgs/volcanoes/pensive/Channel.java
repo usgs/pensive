@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import gov.usgs.plot.data.SliceWave;
 import gov.usgs.plot.data.Wave;
 import gov.usgs.plot.render.Renderer;
-import gov.usgs.util.ConfigFile;
+import gov.usgs.volcanoes.util.configFile.ConfigFile;
 import gov.usgs.util.Time;
 import gov.usgs.util.Util;
 import gov.usgs.volcanoes.pensive.plot.ChannelPlotter;

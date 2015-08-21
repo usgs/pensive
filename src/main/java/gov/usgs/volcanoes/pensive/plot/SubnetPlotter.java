@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 
 import gov.usgs.plot.Plot;
 import gov.usgs.plot.PlotException;
-import gov.usgs.util.ConfigFile;
+import gov.usgs.volcanoes.util.configFile.ConfigFile;
 import gov.usgs.util.Time;
 import gov.usgs.volcanoes.pensive.Channel;
 import gov.usgs.volcanoes.swarm.data.SeismicDataSource;

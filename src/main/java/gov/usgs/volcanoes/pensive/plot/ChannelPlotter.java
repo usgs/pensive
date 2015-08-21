@@ -7,7 +7,7 @@ import gov.usgs.plot.render.TextRenderer;
 import gov.usgs.plot.render.wave.MinuteMarkingWaveRenderer;
 import gov.usgs.plot.render.wave.SliceWaveRenderer;
 import gov.usgs.plot.render.wave.SpectrogramRenderer;
-import gov.usgs.util.ConfigFile;
+import gov.usgs.volcanoes.util.configFile.ConfigFile;
 import gov.usgs.util.Time;
 import gov.usgs.util.Util;
 

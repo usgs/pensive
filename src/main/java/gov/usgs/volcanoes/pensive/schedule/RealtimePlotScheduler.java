@@ -1,6 +1,6 @@
 package gov.usgs.volcanoes.pensive.schedule;
 
-import gov.usgs.util.ConfigFile;
+import gov.usgs.volcanoes.util.configFile.ConfigFile;
 import gov.usgs.volcanoes.pensive.PlotJob;
 import gov.usgs.volcanoes.pensive.plot.SubnetPlotter;
 

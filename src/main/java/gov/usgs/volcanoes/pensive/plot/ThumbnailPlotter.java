@@ -3,7 +3,7 @@ package gov.usgs.volcanoes.pensive.plot;
 import gov.usgs.plot.render.TextRenderer;
 import gov.usgs.plot.render.wave.SliceWaveRenderer;
 import gov.usgs.plot.render.wave.SpectrogramRenderer;
-import gov.usgs.util.ConfigFile;
+import gov.usgs.volcanoes.util.configFile.ConfigFile;
 
 import java.awt.Dimension;
 import java.awt.Font;

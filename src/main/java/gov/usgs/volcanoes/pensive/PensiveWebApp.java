@@ -19,8 +19,8 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
 import freemarker.template.Version;
-import gov.usgs.util.ConfigFile;
 import gov.usgs.volcanoes.pensive.plot.SubnetPlotter;
+import gov.usgs.volcanoes.util.configFile.ConfigFile;
 
 /**
  * 

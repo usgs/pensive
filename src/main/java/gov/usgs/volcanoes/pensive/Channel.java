@@ -1,17 +1,5 @@
 package gov.usgs.volcanoes.pensive;
 
-import gov.usgs.plot.data.SliceWave;
-import gov.usgs.plot.data.Wave;
-import gov.usgs.plot.render.Renderer;
-import gov.usgs.swarm.data.SeismicDataSource;
-import gov.usgs.util.ConfigFile;
-import gov.usgs.util.Time;
-import gov.usgs.util.Util;
-import gov.usgs.volcanoes.pensive.plot.ChannelPlotter;
-import gov.usgs.volcanoes.pensive.plot.FullPlotter;
-import gov.usgs.volcanoes.pensive.plot.SubnetPlotter;
-import gov.usgs.volcanoes.pensive.plot.ThumbnailPlotter;
-
 import java.awt.Dimension;
 import java.io.File;
 import java.io.FileWriter;
@@ -20,6 +8,18 @@ import java.util.regex.Matcher;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import gov.usgs.plot.data.SliceWave;
+import gov.usgs.plot.data.Wave;
+import gov.usgs.plot.render.Renderer;
+import gov.usgs.util.ConfigFile;
+import gov.usgs.util.Time;
+import gov.usgs.util.Util;
+import gov.usgs.volcanoes.pensive.plot.ChannelPlotter;
+import gov.usgs.volcanoes.pensive.plot.FullPlotter;
+import gov.usgs.volcanoes.pensive.plot.SubnetPlotter;
+import gov.usgs.volcanoes.pensive.plot.ThumbnailPlotter;
+import gov.usgs.volcanoes.swarm.data.SeismicDataSource;
 
 /**
  * A single channel of seismic data on a single subnet plot.

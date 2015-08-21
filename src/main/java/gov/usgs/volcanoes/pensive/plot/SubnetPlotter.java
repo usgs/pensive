@@ -1,12 +1,5 @@
 package gov.usgs.volcanoes.pensive.plot;
 
-import gov.usgs.plot.Plot;
-import gov.usgs.plot.PlotException;
-import gov.usgs.swarm.data.SeismicDataSource;
-import gov.usgs.util.ConfigFile;
-import gov.usgs.util.Time;
-import gov.usgs.volcanoes.pensive.Channel;
-
 import java.awt.Dimension;
 import java.io.File;
 import java.util.ArrayList;
@@ -15,6 +8,13 @@ import java.util.regex.Matcher;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import gov.usgs.plot.Plot;
+import gov.usgs.plot.PlotException;
+import gov.usgs.util.ConfigFile;
+import gov.usgs.util.Time;
+import gov.usgs.volcanoes.pensive.Channel;
+import gov.usgs.volcanoes.swarm.data.SeismicDataSource;
 
 /**
  * A single subnet.

@@ -19,7 +19,6 @@ import org.slf4j.LoggerFactory;
 import com.martiansoftware.jsap.JSAPException;
 
 import gov.usgs.volcanoes.util.configFile.ConfigFile;
-import gov.usgs.volcanoes.pensive.args.Args;
 import gov.usgs.volcanoes.pensive.plot.SubnetPlotter;
 import gov.usgs.volcanoes.pensive.schedule.AbstractPlotScheduler;
 import gov.usgs.volcanoes.pensive.schedule.BackfillPlotScheduler;
@@ -238,9 +237,9 @@ public class Pensive {
      * @param args
      */
     public static void main(String[] args) {
-        Args config = null;
+        PensiveArgs config = null;
         try {
-            config = new Args(args);
+            config = new PensiveArgs(args);
         } catch (JSAPException e1) {
             System.err.println("Couldn't parse command line. Try using the --help flag.");
             System.exit(1);

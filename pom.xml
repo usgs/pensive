@@ -41,9 +41,24 @@
       <url>scpexe://vulcan4.wr.usgs.gov/webdata/volcanoes.usgs.gov/htdocs/software/maven2</url>
     </repository>
   </distributionManagement>
- 
+
+  <scm>
+	<connection>scm:git:git@github.com:usgs/pensive.git</connection>
+	<url>scm:git:git@github.com:pensive/penive.git</url>
+	<developerConnection>scm:git:git@github.com:usgs/pensive.git</developerConnection>
+  </scm>
+  
   <build>
     <plugins>
+      <plugin>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.5.2</version>
+        <configuration>
+          <tagBase>
+            file:///D:/subversion_data/repos/my_repo/my-app-example/tags
+          </tagBase>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
 	      <artifactId>maven-shade-plugin</artifactId>

@@ -1,4 +1,4 @@
-package gov.usgs.volcanoes.pensive.args;
+package gov.usgs.volcanoes.pensive;
 
 import java.util.Date;
 
@@ -7,10 +7,12 @@ import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.Parameter;
-import com.martiansoftware.jsap.SimpleJSAP;
 import com.martiansoftware.jsap.StringParser;
 import com.martiansoftware.jsap.Switch;
 import com.martiansoftware.jsap.UnflaggedOption;
+import com.martiansoftware.jsap.stringparsers.DateStringParser;
+
+import gov.usgs.volcanoes.util.Args;
 
 /**
  * Argument processor for Pensive
@@ -21,11 +23,12 @@ import com.martiansoftware.jsap.UnflaggedOption;
  *         through the CC0 1.0 Universal public domain dedication.
  *         https://creativecommons.org/publicdomain/zero/1.0/legalcode
  */
-public class Args extends SimpleJSAP {
+public class PensiveArgs extends Args {
 
     public static final String DEFAULT_CONFIG_FILENAME = "pensive.config";
     public static final String PROGRAM_NAME = "java -jar gov.usgs.volcanoes.pensive.Pensive";
     public static final String EXPLANATION = "I am the Pensive server\n";
+    public static final String INPUT_TIME_FORMAT = "yyyyMMddHHmm";
 
     private static final StringParser DATE_PARSER = DateStringParser.getParser();
     
@@ -47,15 +50,10 @@ public class Args extends SimpleJSAP {
     public final Date startTime;
     public final Date endTime;
 
-    public Args(String[] args) throws JSAPException {
+    public PensiveArgs(String[] args) throws JSAPException {
         super(PROGRAM_NAME, EXPLANATION, PARAMETERS);
+        DateStringParser.getParser().setProperty("format", INPUT_TIME_FORMAT);
         config = parse(args);
-        if (messagePrinted()) {
-            if (!config.getBoolean("help"))
-                System.err.println("Try using the --help flag.");
-
-            System.exit(1);
-        }
 
         createConfig = config.getBoolean("create-config");
         configFileName = config.getString("config-filename");

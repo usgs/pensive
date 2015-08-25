@@ -11,20 +11,22 @@ import org.junit.Test;
 
 import com.martiansoftware.jsap.JSAPException;
 
+import gov.usgs.volcanoes.pensive.PensiveArgs;
+
 public class ArgsTest {
 
     private static final String START_DATE = "201510110000";
     private static final String END_DATE = "201510120000";
 
-    Args args;
+    PensiveArgs args;
     String[] commandLineArgs = { "-s", START_DATE, "-e", END_DATE };
     SimpleDateFormat format;
 
     @Before
     public void setup() throws JSAPException {
 
-        args = new Args(commandLineArgs);
-        format = new SimpleDateFormat(DateStringParser.INPUT_TIME_FORMAT);
+        args = new PensiveArgs(commandLineArgs);
+        format = new SimpleDateFormat(PensiveArgs.INPUT_TIME_FORMAT);
         format.setTimeZone(TimeZone.getTimeZone("UTC"));
     }
 

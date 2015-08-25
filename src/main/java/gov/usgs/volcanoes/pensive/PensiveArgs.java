@@ -7,12 +7,11 @@ import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.Parameter;
-import com.martiansoftware.jsap.StringParser;
 import com.martiansoftware.jsap.Switch;
 import com.martiansoftware.jsap.UnflaggedOption;
-import com.martiansoftware.jsap.stringparsers.DateStringParser;
 
-import gov.usgs.volcanoes.util.Args;
+import gov.usgs.volcanoes.util.args.Args;
+import gov.usgs.volcanoes.util.args.DateStringParser;
 
 /**
  * Argument processor for Pensive
@@ -30,7 +29,7 @@ public class PensiveArgs extends Args {
     public static final String EXPLANATION = "I am the Pensive server\n";
     public static final String INPUT_TIME_FORMAT = "yyyyMMddHHmm";
 
-    private static final StringParser DATE_PARSER = DateStringParser.getParser();
+    private static final DateStringParser DATE_PARSER = new DateStringParser(INPUT_TIME_FORMAT);
     
     private static final Parameter[] PARAMETERS = new Parameter[] {
             new Switch("create-config", 'c', "create-config",
@@ -52,7 +51,6 @@ public class PensiveArgs extends Args {
 
     public PensiveArgs(String[] args) throws JSAPException {
         super(PROGRAM_NAME, EXPLANATION, PARAMETERS);
-        DateStringParser.getParser().setProperty("format", INPUT_TIME_FORMAT);
         config = parse(args);
 
         createConfig = config.getBoolean("create-config");

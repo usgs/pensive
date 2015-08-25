@@ -20,10 +20,15 @@
   <licenses>
     <license>
       <name>CC0 1.0 Universal</name>
-      <url>http://www.martiansoftware.com/jsap/license.html</url>
+      <url>http://creativecommons.org/publicdomain/zero/1.0/</url>
       <distribution>repo</distribution>
     </license>
   </licenses>
+  <scm>
+    <connection>scm:git:git@github.com:usgs/pensive.git</connection>
+    <developerConnection>scm:git:git@github.com:usgs/pensive.git</developerConnection>
+    <url>scm:git:git@github.com:pensive/penive.git</url>
+  </scm>
   <build>
     <extensions>
       <extension>
@@ -62,6 +67,13 @@
       </plugins>
     </pluginManagement>
     <plugins>
+      <plugin>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.5.2</version>
+        <configuration>
+          <tagBase>file:///D:/subversion_data/repos/my_repo/my-app-example/tags</tagBase>
+        </configuration>
+      </plugin>
       <plugin>
         <artifactId>maven-shade-plugin</artifactId>
         <version>2.4.1</version>
@@ -156,6 +168,14 @@
       <url>http://volcanoes.usgs.gov/software/maven2/</url>
     </repository>
   </repositories>
+  <dependencies>
+    <dependency>
+      <groupId>gov.usgs.volcanoes</groupId>
+      <artifactId>util</artifactId>
+      <version>[1.1.0,)</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
   <distributionManagement>
     <repository>
       <id>volcanoes.web</id>

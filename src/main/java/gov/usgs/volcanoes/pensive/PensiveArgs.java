@@ -2,16 +2,22 @@ package gov.usgs.volcanoes.pensive;
 
 import java.util.Date;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.martiansoftware.jsap.FlaggedOption;
 import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.Parameter;
+import com.martiansoftware.jsap.ParseException;
 import com.martiansoftware.jsap.Switch;
-import com.martiansoftware.jsap.UnflaggedOption;
 
 import gov.usgs.volcanoes.util.args.Args;
-import gov.usgs.volcanoes.util.args.DateStringParser;
+import gov.usgs.volcanoes.util.args.Arguments;
+import gov.usgs.volcanoes.util.args.decorator.ConfigFileArg;
+import gov.usgs.volcanoes.util.args.decorator.CreateConfigArg;
+import gov.usgs.volcanoes.util.args.parser.DateStringParser;
 
 /**
  * Argument processor for Pensive
@@ -22,7 +28,8 @@ import gov.usgs.volcanoes.util.args.DateStringParser;
  *         through the CC0 1.0 Universal public domain dedication.
  *         https://creativecommons.org/publicdomain/zero/1.0/legalcode
  */
-public class PensiveArgs extends Args {
+public class PensiveArgs {
+    private static final Logger LOGGER = LoggerFactory.getLogger(PensiveArgs.class);
 
     public static final String EXAMPLE_CONFIG_FILENAME = "pensive-example.config";
     public static final String DEFAULT_CONFIG_FILENAME = "pensive.config";
@@ -43,18 +50,42 @@ public class PensiveArgs extends Args {
     public final boolean verbose;
     public final Date startTime;
     public final Date endTime;
+    public final String configFileName;
 
-    public PensiveArgs(String[] args) {
-        super(PROGRAM_NAME, EXPLANATION, PARAMETERS);
-        addCreateConfig(EXAMPLE_CONFIG_FILENAME, DEFAULT_CONFIG_FILENAME);
-        config = parse(args);
+    public PensiveArgs(String[] commandLineArgs) {
+    	Arguments args = new Args(PROGRAM_NAME, EXPLANATION, PARAMETERS);
+    	try {
+			args = new ConfigFileArg(DEFAULT_CONFIG_FILENAME, args);
+			args = new CreateConfigArg(EXAMPLE_CONFIG_FILENAME, args);
+		} catch (JSAPException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+    	
+    	JSAPResult jsapResult = null;
+		try {
+			jsapResult = args.parse(commandLineArgs);
+		} catch (ParseException e) {
+			LOGGER.error("Cannot parse command line.");
+			System.exit(1);
+		}
+		
+        verbose = jsapResult.getBoolean("verbose");
+        LOGGER.debug("Setting: verbose={}", verbose);
 
-        verbose = config.getBoolean("verbose");
+        startTime = jsapResult.getDate("startTime");
+        LOGGER.debug("Setting: startTime={}", startTime);
+        
+        endTime = jsapResult.getDate("endTime");
+        LOGGER.debug("Setting: endTime={}", endTime);
 
-        startTime = config.getDate("startTime");
-        endTime = config.getDate("endTime");
+        configFileName = jsapResult.getString("config-filename");
+        LOGGER.debug("Setting: config-filename={}", configFileName);
+
         if (!validateTimes())
             System.exit(1);
+        
+        System.exit(1);
     }
 
     private boolean validateTimes() {

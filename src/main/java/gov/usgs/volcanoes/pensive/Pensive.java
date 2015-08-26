@@ -36,7 +36,6 @@ import gov.usgs.volcanoes.pensive.schedule.RealtimePlotScheduler;
 public class Pensive {
 
     public static final boolean DEFAULT_WRITE_HTML = true;
-    public static final String DEFAULT_CONFIG_FILENAME = "pensive.config";
 
     static {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
@@ -191,7 +190,7 @@ public class Pensive {
         for (AbstractPlotScheduler ps : plotScheduler.values()) {
 
             // schedule first plot immediately
-           new Thread(ps).start();
+            new Thread(ps).start();
 
             if (ps instanceof RealtimePlotScheduler) {
                 ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
@@ -201,22 +200,6 @@ public class Pensive {
                 LOGGER.debug("Scheduled plots start in " + delay + "ms");
                 scheduler.scheduleAtFixedRate(ps, delay, SubnetPlotter.DURATION_S, TimeUnit.SECONDS);
             }
-        }
-    }
-
-    public static void createConfig() throws IOException {
-
-        InputStream is = ClassLoader.getSystemClassLoader().getResourceAsStream("pensive-example.config");
-        FileOutputStream os = new FileOutputStream(DEFAULT_CONFIG_FILENAME);
-        try {
-            byte[] buffer = new byte[1024];
-            int length;
-            while ((length = is.read(buffer)) > 0) {
-                os.write(buffer, 0, length);
-            }
-        } finally {
-            is.close();
-            os.close();
         }
     }
 
@@ -237,23 +220,7 @@ public class Pensive {
      * @param args
      */
     public static void main(String[] args) {
-        PensiveArgs config = null;
-        try {
-            config = new PensiveArgs(args);
-        } catch (JSAPException e1) {
-            System.err.println("Couldn't parse command line. Try using the --help flag.");
-            System.exit(1);
-        }
-
-        if (config.createConfig) {
-            try {
-                LOGGER.warn("Creating example config " + DEFAULT_CONFIG_FILENAME);
-                Pensive.createConfig();
-            } catch (IOException e) {
-                LOGGER.warn("Cannot write example config. " + e.getLocalizedMessage());
-            }
-            System.exit(0);
-        }
+        PensiveArgs config = new PensiveArgs(args);
 
         ConfigFile cf = new ConfigFile(config.configFileName);
         if (!cf.wasSuccessfullyRead()) {

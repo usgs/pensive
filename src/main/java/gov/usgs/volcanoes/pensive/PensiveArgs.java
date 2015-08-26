@@ -24,7 +24,9 @@ import gov.usgs.volcanoes.util.args.DateStringParser;
  */
 public class PensiveArgs extends Args {
 
+    public static final String EXAMPLE_CONFIG_FILENAME = "pensive-example.config";
     public static final String DEFAULT_CONFIG_FILENAME = "pensive.config";
+
     public static final String PROGRAM_NAME = "java -jar gov.usgs.volcanoes.pensive.Pensive";
     public static final String EXPLANATION = "I am the Pensive server\n";
     public static final String INPUT_TIME_FORMAT = "yyyyMMddHHmm";
@@ -32,29 +34,21 @@ public class PensiveArgs extends Args {
     private static final DateStringParser DATE_PARSER = new DateStringParser(INPUT_TIME_FORMAT);
     
     private static final Parameter[] PARAMETERS = new Parameter[] {
-            new Switch("create-config", 'c', "create-config",
-                    "Create an example config file in the curent working directory."),
             new Switch("verbose", 'v', "verbose", "Verbose logging."),
             new FlaggedOption("startTime", DATE_PARSER, JSAP.NO_DEFAULT, JSAP.NOT_REQUIRED, 's',
                     "startTime", "Start of backfill period\n"),
             new FlaggedOption("endTime", DATE_PARSER, JSAP.NO_DEFAULT, JSAP.NOT_REQUIRED, 'e',
-                    "endTime", "End of backfill period\n"),
-            new UnflaggedOption("config-filename", JSAP.STRING_PARSER, DEFAULT_CONFIG_FILENAME, JSAP.NOT_REQUIRED,
-                    JSAP.NOT_GREEDY, "The config file name.") };
+                    "endTime", "End of backfill period\n")};
 
-    private JSAPResult config;
-    public final boolean createConfig;
-    public final String configFileName;
     public final boolean verbose;
     public final Date startTime;
     public final Date endTime;
 
-    public PensiveArgs(String[] args) throws JSAPException {
+    public PensiveArgs(String[] args) {
         super(PROGRAM_NAME, EXPLANATION, PARAMETERS);
+        addCreateConfig(EXAMPLE_CONFIG_FILENAME, DEFAULT_CONFIG_FILENAME);
         config = parse(args);
 
-        createConfig = config.getBoolean("create-config");
-        configFileName = config.getString("config-filename");
         verbose = config.getBoolean("verbose");
 
         startTime = config.getDate("startTime");

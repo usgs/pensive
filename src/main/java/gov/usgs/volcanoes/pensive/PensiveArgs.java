@@ -84,8 +84,6 @@ public class PensiveArgs {
 
         if (!validateTimes())
             System.exit(1);
-        
-        System.exit(1);
     }
 
     private boolean validateTimes() {

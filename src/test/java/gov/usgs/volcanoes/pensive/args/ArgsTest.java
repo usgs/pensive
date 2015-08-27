@@ -34,7 +34,7 @@ public class ArgsTest {
     @Test
     public void startTimeArg() throws ParseException {
         long givenTime = format.parse(START_DATE).getTime();
-        long derivedTime = args.startTime.getTime();
+        long derivedTime = args.startTime;
 
         assertEquals(derivedTime, givenTime);
     }
@@ -42,7 +42,7 @@ public class ArgsTest {
     @Test
     public void endTimeArg() throws ParseException {
         long givenTime = format.parse(END_DATE).getTime();
-        long derivedTime = args.endTime.getTime();
+        long derivedTime = args.endTime;
 
         assertEquals(derivedTime, givenTime);
     }

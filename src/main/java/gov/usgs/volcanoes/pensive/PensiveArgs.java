@@ -5,19 +5,17 @@ import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.martiansoftware.jsap.FlaggedOption;
-import com.martiansoftware.jsap.JSAP;
 import com.martiansoftware.jsap.JSAPException;
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.Parameter;
 import com.martiansoftware.jsap.ParseException;
-import com.martiansoftware.jsap.Switch;
 
 import gov.usgs.volcanoes.util.args.Args;
 import gov.usgs.volcanoes.util.args.Arguments;
 import gov.usgs.volcanoes.util.args.decorator.ConfigFileArg;
 import gov.usgs.volcanoes.util.args.decorator.CreateConfigArg;
-import gov.usgs.volcanoes.util.args.parser.DateStringParser;
+import gov.usgs.volcanoes.util.args.decorator.DateRangeArg;
+import gov.usgs.volcanoes.util.args.decorator.VerboseArg;
 
 /**
  * Argument processor for Pensive
@@ -38,25 +36,20 @@ public class PensiveArgs {
     public static final String EXPLANATION = "I am the Pensive server\n";
     public static final String INPUT_TIME_FORMAT = "yyyyMMddHHmm";
 
-    private static final DateStringParser DATE_PARSER = new DateStringParser(INPUT_TIME_FORMAT);
-    
-    private static final Parameter[] PARAMETERS = new Parameter[] {
-            new Switch("verbose", 'v', "verbose", "Verbose logging."),
-            new FlaggedOption("startTime", DATE_PARSER, JSAP.NO_DEFAULT, JSAP.NOT_REQUIRED, 's',
-                    "startTime", "Start of backfill period\n"),
-            new FlaggedOption("endTime", DATE_PARSER, JSAP.NO_DEFAULT, JSAP.NOT_REQUIRED, 'e',
-                    "endTime", "End of backfill period\n")};
+    private static final Parameter[] PARAMETERS = new Parameter[] {};
 
     public final boolean verbose;
-    public final Date startTime;
-    public final Date endTime;
+    public final long startTime;
+    public final long endTime;
     public final String configFileName;
 
     public PensiveArgs(String[] commandLineArgs) {
     	Arguments args = new Args(PROGRAM_NAME, EXPLANATION, PARAMETERS);
     	try {
-			args = new ConfigFileArg(DEFAULT_CONFIG_FILENAME, args);
 			args = new CreateConfigArg(EXAMPLE_CONFIG_FILENAME, args);
+			args = new ConfigFileArg(DEFAULT_CONFIG_FILENAME, args);
+			args = new DateRangeArg(INPUT_TIME_FORMAT, args);
+			args = new VerboseArg(args);
 		} catch (JSAPException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -73,38 +66,21 @@ public class PensiveArgs {
         verbose = jsapResult.getBoolean("verbose");
         LOGGER.debug("Setting: verbose={}", verbose);
 
-        startTime = jsapResult.getDate("startTime");
+        Date startDate = jsapResult.getDate("startTime");
+        if (startDate == null)
+        	startTime = Long.MIN_VALUE;
+        else
+        	startTime = jsapResult.getDate("startTime").getTime();
         LOGGER.debug("Setting: startTime={}", startTime);
         
-        endTime = jsapResult.getDate("endTime");
+        Date endDate = jsapResult.getDate("endTime");
+        if (endDate == null)
+        	endTime = Long.MIN_VALUE;
+        else
+        	endTime = jsapResult.getDate("endTime").getTime();
         LOGGER.debug("Setting: endTime={}", endTime);
 
         configFileName = jsapResult.getString("config-filename");
         LOGGER.debug("Setting: config-filename={}", configFileName);
-
-        if (!validateTimes())
-            System.exit(1);
-    }
-
-    private boolean validateTimes() {
-        if (startTime == null && endTime == null)
-            return true;
-
-        if (startTime != null && endTime == null) {
-            System.err.println("endTime argument is missing");
-            return false;
-        }
-
-        if (endTime != null && startTime == null) {
-            System.err.println("startTime argument is missing");
-            return false;
-        }
-
-        if (!endTime.after(startTime)) {
-            System.err.println("startTime must be before endTime");
-            return false;
-        }
-            
-        return true;
     }
 }

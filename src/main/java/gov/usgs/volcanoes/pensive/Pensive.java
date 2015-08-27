@@ -96,7 +96,7 @@ public class Pensive {
     /**
      * Create one PlotScheduler per wave server, each running in its own thread.
      */
-    private void createBackfillPlotSchedulers(Date startTime, Date endTime) {
+    private void createBackfillPlotSchedulers(long startTime, long endTime) {
         plotScheduler = new HashMap<String, AbstractPlotScheduler>();
 
         for (String server : configFile.getList("waveSource")) {
@@ -229,7 +229,7 @@ public class Pensive {
         }
 
         Pensive pensive = new Pensive(cf);
-        if (config.startTime == null)
+        if (config.startTime < 0)
             pensive.createRealtimePlotSchedulers();
         else {
             pensive.createBackfillPlotSchedulers(config.startTime, config.endTime);

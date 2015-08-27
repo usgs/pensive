@@ -8,14 +8,14 @@ import gov.usgs.volcanoes.pensive.plot.SubnetPlotter;
 
 public class BackfillPlotScheduler extends AbstractPlotScheduler {
 
-    private Date startTime;
-    private Date endTime;
+    private long startTime;
+    private long endTime;
 
     public BackfillPlotScheduler(String name, ConfigFile config) {
         super(name, config);
     }
 
-    public void setRange(Date startTime, Date endTime) {
+    public void setRange(long startTime, long endTime) {
         this.startTime = startTime;
         this.endTime = endTime;
     }
@@ -25,9 +25,9 @@ public class BackfillPlotScheduler extends AbstractPlotScheduler {
      */
     protected void schedulePlots() {
         long duration = SubnetPlotter.DURATION_S * 1000;
-        long firstPlot = startTime.getTime() - (startTime.getTime() % duration) + duration;
-        long lastPlot = endTime.getTime();
-        long offset = endTime.getTime() % duration;
+        long firstPlot = startTime - (startTime % duration) + duration;
+        long lastPlot = endTime;
+        long offset = endTime % duration;
         if (offset > 0)
             lastPlot += duration - offset;
 

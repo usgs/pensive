@@ -87,13 +87,12 @@
             </filters>
               <artifactSet>
                 <includes>
-                  <include>gov.usgs.volcanoes:usgs</include>
+                  <include>gov.usgs.volcanoes:*</include>
                   <include>org.freemarker:freemarker</include>
                   <include>com.martiansoftware:jsap</include>
                   <include>net.sourceforge.jtransforms:jtransforms</include>
                   <include>org.slf4j:*</include>
                   <include>org.apache:log4j</include>
-                  <include>gov.usgs.volcanoes:swarm</include>
                 </includes>
               </artifactSet>
             </configuration>
@@ -240,7 +239,7 @@
     <dependency>
     	<groupId>gov.usgs.volcanoes</groupId>
     	<artifactId>util</artifactId>
-    	<version>[1.1.4,)</version>
+    	<version>[1.1.6,)</version>
     </dependency>
   </dependencies>
 </project>

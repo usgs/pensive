@@ -44,10 +44,11 @@ public class PensiveArgs {
     public final String configFileName;
 
     public PensiveArgs(String[] commandLineArgs) {
-    	Arguments args = new Args(PROGRAM_NAME, EXPLANATION, PARAMETERS);
+    	Arguments args = null;
     	try {
-			args = new CreateConfigArg(EXAMPLE_CONFIG_FILENAME, args);
+    		args = new Args(PROGRAM_NAME, EXPLANATION, PARAMETERS);
 			args = new ConfigFileArg(DEFAULT_CONFIG_FILENAME, args);
+			args = new CreateConfigArg(EXAMPLE_CONFIG_FILENAME, args);
 			args = new DateRangeArg(INPUT_TIME_FORMAT, args);
 			args = new VerboseArg(args);
 		} catch (JSAPException e1) {
@@ -58,8 +59,8 @@ public class PensiveArgs {
     	JSAPResult jsapResult = null;
 		try {
 			jsapResult = args.parse(commandLineArgs);
-		} catch (ParseException e) {
-			LOGGER.error("Cannot parse command line.");
+		} catch (Exception e) {
+			LOGGER.error("Cannot parse command line. (" + e.getLocalizedMessage() + ")");
 			System.exit(1);
 		}
 		
@@ -82,5 +83,8 @@ public class PensiveArgs {
 
         configFileName = jsapResult.getString("config-filename");
         LOGGER.debug("Setting: config-filename={}", configFileName);
+        
+        if (jsapResult.getBoolean("create-config"))
+        	System.exit(1);
     }
 }

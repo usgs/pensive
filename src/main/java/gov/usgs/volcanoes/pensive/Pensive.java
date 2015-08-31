@@ -1,5 +1,6 @@
 package gov.usgs.volcanoes.pensive;
 
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -222,12 +223,14 @@ public class Pensive {
     public static void main(String[] args) {
         PensiveArgs config = new PensiveArgs(args);
 
-        ConfigFile cf = new ConfigFile(config.configFileName);
-        if (!cf.wasSuccessfullyRead()) {
-            LOGGER.warn("Can't parse config file " + config.configFileName + ". Try using the --help flag.");
-            System.exit(1);
-        }
-
+        ConfigFile cf = null;
+		try {
+			cf = new ConfigFile(config.configFileName);
+		} catch (FileNotFoundException e) {
+			LOGGER.error("Couldn't find config file " + config.configFileName + ". Use '-c' to create an example config.");
+			System.exit(1);
+		}
+		
         Pensive pensive = new Pensive(cf);
         if (config.startTime < 0)
             pensive.createRealtimePlotSchedulers();

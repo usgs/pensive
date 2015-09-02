@@ -18,7 +18,6 @@ import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
-import freemarker.template.Version;
 import gov.usgs.volcanoes.pensive.plot.SubnetPlotter;
 import gov.usgs.volcanoes.util.configFile.ConfigFile;
 
@@ -68,7 +67,7 @@ public class PensiveWebApp {
         root.put("filePathFormat", config.getString("filePathFormat", SubnetPlotter.DEFAULT_FILE_PATH_FORMAT));
         root.put("fileSuffixFormat", config.getString("fileSuffixFormat", SubnetPlotter.DEFAULT_FILE_SUFFIX_FORMAT));
         root.put("selectedNetwork", config.getString("selectedNetwork"));
-        root.put("version", PensiveVersion.VERSION_STRING);
+        root.put("version", Version.VERSION_STRING);
         
         try {
             initializeTemplateEngine();
@@ -91,7 +90,7 @@ public class PensiveWebApp {
 
         cfg.setDefaultEncoding("UTF-8");
         cfg.setTemplateExceptionHandler(TemplateExceptionHandler.HTML_DEBUG_HANDLER);
-        cfg.setIncompatibleImprovements(new Version(2, 3, 20));
+        cfg.setIncompatibleImprovements(new freemarker.template.Version(2, 3, 20));
     }
     
     /**

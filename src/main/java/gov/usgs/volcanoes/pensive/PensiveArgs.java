@@ -43,48 +43,38 @@ public class PensiveArgs {
     public final long endTime;
     public final String configFileName;
 
-    public PensiveArgs(String[] commandLineArgs) {
-    	Arguments args = null;
-    	try {
-    		args = new Args(PROGRAM_NAME, EXPLANATION, PARAMETERS);
-			args = new ConfigFileArg(DEFAULT_CONFIG_FILENAME, args);
-			args = new CreateConfigArg(EXAMPLE_CONFIG_FILENAME, args);
-			args = new DateRangeArg(INPUT_TIME_FORMAT, args);
-			args = new VerboseArg(args);
-		} catch (JSAPException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-    	
-    	JSAPResult jsapResult = null;
-		try {
-			jsapResult = args.parse(commandLineArgs);
-		} catch (Exception e) {
-			LOGGER.error("Cannot parse command line. (" + e.getLocalizedMessage() + ")");
-			System.exit(1);
-		}
-		
+    public PensiveArgs(String[] commandLineArgs) throws Exception {
+        Arguments args = null;
+        args = new Args(PROGRAM_NAME, EXPLANATION, PARAMETERS);
+        args = new ConfigFileArg(DEFAULT_CONFIG_FILENAME, args);
+        args = new CreateConfigArg(EXAMPLE_CONFIG_FILENAME, args);
+        args = new DateRangeArg(INPUT_TIME_FORMAT, args);
+        args = new VerboseArg(args);
+
+        JSAPResult jsapResult = null;
+        jsapResult = args.parse(commandLineArgs);
+
         verbose = jsapResult.getBoolean("verbose");
         LOGGER.debug("Setting: verbose={}", verbose);
 
         Date startDate = jsapResult.getDate("startTime");
         if (startDate == null)
-        	startTime = Long.MIN_VALUE;
+            startTime = Long.MIN_VALUE;
         else
-        	startTime = jsapResult.getDate("startTime").getTime();
+            startTime = jsapResult.getDate("startTime").getTime();
         LOGGER.debug("Setting: startTime={}", startTime);
-        
+
         Date endDate = jsapResult.getDate("endTime");
         if (endDate == null)
-        	endTime = Long.MIN_VALUE;
+            endTime = Long.MIN_VALUE;
         else
-        	endTime = jsapResult.getDate("endTime").getTime();
+            endTime = jsapResult.getDate("endTime").getTime();
         LOGGER.debug("Setting: endTime={}", endTime);
 
         configFileName = jsapResult.getString("config-filename");
         LOGGER.debug("Setting: config-filename={}", configFileName);
-        
+
         if (jsapResult.getBoolean("create-config"))
-        	System.exit(1);
+            System.exit(1);
     }
 }

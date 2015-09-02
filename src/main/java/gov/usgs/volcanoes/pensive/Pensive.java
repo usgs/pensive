@@ -65,7 +65,7 @@ public class Pensive {
         this.configFile = configFile;
         long now = System.currentTimeMillis();
         configFile.put("applicationLaunch", "" + now);
-        LOGGER.info("Launching Pensive ({})", PensiveVersion.VERSION_STRING);
+        LOGGER.info("Launching Pensive ({})", Version.VERSION_STRING);
 
         webApp = new PensiveWebApp(configFile);
         boolean writeHtml = configFile.getBoolean("writeHtml", DEFAULT_WRITE_HTML);
@@ -219,8 +219,9 @@ public class Pensive {
      * Where it all begins
      * 
      * @param args
+     * @throws Exception 
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         PensiveArgs config = new PensiveArgs(args);
 
         ConfigFile cf = null;

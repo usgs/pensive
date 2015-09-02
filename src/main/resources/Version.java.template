@@ -1,6 +1,6 @@
 package gov.usgs.volcanoes.pensive;
 
-public final class PensiveVersion {
+public final class Version {
 
     public static final String BUILD_TIME="@buildtime@";
 

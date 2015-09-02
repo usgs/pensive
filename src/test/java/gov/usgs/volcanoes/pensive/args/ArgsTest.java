@@ -24,7 +24,7 @@ public class ArgsTest {
     SimpleDateFormat format;
 
     @Before
-    public void setup() throws JSAPException {
+    public void setup() throws Exception {
 
         args = new PensiveArgs(commandLineArgs);
         format = new SimpleDateFormat(PensiveArgs.INPUT_TIME_FORMAT);

@@ -104,8 +104,8 @@ public class PensiveWebApp {
             
             Template template = cfg.getTemplate("pensive.ftl");
             String file = pathRoot + '/' + FILENAME;
-            file.replace("/+", "/");
-            file.replace("/", Matcher.quoteReplacement(File.separator));
+            file = file.replace("/+", "/");
+            file = file.replace("/", Matcher.quoteReplacement(File.separator));
             FileWriter fw = new FileWriter(file);
             template.process(root, fw);
             fw.close();

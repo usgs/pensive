@@ -19,7 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import com.martiansoftware.jsap.JSAPException;
 
-import gov.usgs.volcanoes.util.configFile.ConfigFile;
+import gov.usgs.volcanoes.core.configfile.ConfigFile;
 import gov.usgs.volcanoes.pensive.plot.SubnetPlotter;
 import gov.usgs.volcanoes.pensive.schedule.AbstractPlotScheduler;
 import gov.usgs.volcanoes.pensive.schedule.BackfillPlotScheduler;

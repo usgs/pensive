@@ -1,5 +1,9 @@
 package gov.usgs.volcanoes.pensive.plot;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+
 import gov.usgs.plot.data.SliceWave;
 import gov.usgs.plot.data.Spectrogram;
 import gov.usgs.plot.render.BasicFrameRenderer;
@@ -7,13 +11,8 @@ import gov.usgs.plot.render.TextRenderer;
 import gov.usgs.plot.render.wave.MinuteMarkingWaveRenderer;
 import gov.usgs.plot.render.wave.SliceWaveRenderer;
 import gov.usgs.plot.render.wave.SpectrogramRenderer;
-import gov.usgs.volcanoes.util.configFile.ConfigFile;
 import gov.usgs.util.Time;
-import gov.usgs.util.Util;
-
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
+import gov.usgs.volcanoes.core.configfile.ConfigFile;
 
 /**
  * 

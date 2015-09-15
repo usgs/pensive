@@ -4,8 +4,16 @@
   <groupId>gov.usgs.volcanoes</groupId>
   <artifactId>pensive</artifactId>
   <name>Pensive</name>
-  <version>1.3.1</version>
+  <version>1.3.2</version>
   <url>http://volcanoes.usgs.gov/software/pensive</url>
+  <issueManagement>
+    <system>GitHub</system>
+    <url>https://github.com/usgs/pensive</url>
+  </issueManagement>
+  <ciManagement>
+    <system>Travis</system>
+    <url>https://travis-ci.org/usgs/pensive/</url>
+  </ciManagement>
   <developers>
     <developer>
       <id>tparker</id>
@@ -67,13 +75,6 @@
       </plugins>
     </pluginManagement>
     <plugins>
-      <plugin>
-        <artifactId>maven-release-plugin</artifactId>
-        <version>2.5.2</version>
-        <configuration>
-          <tagBase>file:///D:/subversion_data/repos/my_repo/my-app-example/tags</tagBase>
-        </configuration>
-      </plugin>
       <plugin>
         <artifactId>maven-shade-plugin</artifactId>
         <version>2.4.1</version>

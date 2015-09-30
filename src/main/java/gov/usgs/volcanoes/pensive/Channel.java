@@ -32,164 +32,168 @@ import gov.usgs.volcanoes.swarm.data.SeismicDataSource;
  */
 public class Channel {
 
-    /** my logger */
-    private static final Logger LOGGER = LoggerFactory.getLogger(Channel.class);
+  /** my logger */
+  private static final Logger LOGGER = LoggerFactory.getLogger(Channel.class);
 
-    /** do I write data files? */
-    public static final boolean DEFAULT_WRITE_DATA = false;
+  /** do I write data files? */
+  public static final boolean DEFAULT_WRITE_DATA = false;
 
-    /** Default format for data file suffix */
-    public static final String DEFAULT_DATA_FILE_SUFFIX_FORMAT = "_yyyyMMdd";
+  /** Default format for data file suffix */
+  public static final String DEFAULT_DATA_FILE_SUFFIX_FORMAT = "_yyyyMMdd";
 
-    /** Default data timestamp */
-    public static final String DEFAULT_DATA_TIMESTAMP_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS";
+  /** Default data timestamp */
+  public static final String DEFAULT_DATA_TIMESTAMP_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS";
 
-    /** channel name in config file format */
-    public final String name;
+  /** channel name in config file format */
+  public final String name;
 
-    /** My full ChannelPlotter */
-    private final ChannelPlotter plot;
+  /** My full ChannelPlotter */
+  private final ChannelPlotter plot;
 
-    /** My thumbnail ChannelPlotter */
-    private final ChannelPlotter thumb;
+  /** My thumbnail ChannelPlotter */
+  private final ChannelPlotter thumb;
 
-    /** Do I write data files? */
-    private final boolean writeData;
+  /** Do I write data files? */
+  private final boolean writeData;
 
-    /** format of data file path */
-    private final String dataFilePathFormat;
+  /** format of data file path */
+  private final String dataFilePathFormat;
 
-    /** format of data file name */
-    private final String dataFileSuffixFormat;
+  /** format of data file name */
+  private final String dataFileSuffixFormat;
 
-    /** Where to write data files */
-    private final String dataPathRoot;
+  /** Where to write data files */
+  private final String dataPathRoot;
 
-    /** my network name */
-    private final String networkName;
+  /** my network name */
+  private final String networkName;
 
-    /** my subnet name */
-    private final String subnetName;
+  /** my subnet name */
+  private final String subnetName;
 
-    /** data file timestamp format */
-    private final String dataTimestampFormat;
+  /** data file timestamp format */
+  private final String dataTimestampFormat;
 
-    /**
-     * Class constructor
-     * 
-     * @param channel
-     *            my channel
-     * @param index
-     *            my index into the plot
-     * @param plotDimension
-     *            Dimension of the full plot
-     * @param thumbDimension
-     *            Dimension of the thumbnail plot
-     * @param decorateX
-     *            If true decorate x-axis on full plot
-     * @param config
-     *            My config stanza
-     */
-    public Channel(String channel, int index, Dimension plotDimension, Dimension thumbDimension, boolean decorateX,
-            ConfigFile config, String networkName, String subnetName) {
-        this.name = channel;
+  /**
+   * Class constructor
+   * 
+   * @param channel
+   *          my channel
+   * @param index
+   *          my index into the plot
+   * @param plotDimension
+   *          Dimension of the full plot
+   * @param thumbDimension
+   *          Dimension of the thumbnail plot
+   * @param decorateX
+   *          If true decorate x-axis on full plot
+   * @param config
+   *          My config stanza
+   */
+  public Channel(String channel, int index, Dimension plotDimension, Dimension thumbDimension,
+      boolean decorateX, ConfigFile config, String networkName, String subnetName) {
+    this.name = channel;
 
-        plot = new FullPlotter(channel, index, plotDimension, decorateX, config);
-        thumb = new ThumbnailPlotter(channel, index, thumbDimension, config);
-        writeData = config.getBoolean("writeData", DEFAULT_WRITE_DATA);
+    plot = new FullPlotter(channel, index, plotDimension, decorateX, config);
+    thumb = new ThumbnailPlotter(channel, index, thumbDimension, config);
+    writeData = config.getBoolean("writeData", DEFAULT_WRITE_DATA);
 
-        dataFilePathFormat = config.getString("dataFilePathFormat", config.getString("filePathFormat"));
-        dataFileSuffixFormat = config.getString("dataFileSuffixFormat", DEFAULT_DATA_FILE_SUFFIX_FORMAT);
-        dataPathRoot = config.getString("dataPathRoot", config.getString("pathRoot"));
-        dataTimestampFormat = config.getString("dataTimestampFormat", DEFAULT_DATA_TIMESTAMP_FORMAT);
+    dataFilePathFormat = config.getString("dataFilePathFormat", config.getString("filePathFormat"));
+    dataFileSuffixFormat =
+        config.getString("dataFileSuffixFormat", DEFAULT_DATA_FILE_SUFFIX_FORMAT);
+    dataPathRoot = config.getString("dataPathRoot", config.getString("pathRoot"));
+    dataTimestampFormat = config.getString("dataTimestampFormat", DEFAULT_DATA_TIMESTAMP_FORMAT);
 
-        this.networkName = networkName;
-        this.subnetName = subnetName;
+    this.networkName = networkName;
+    this.subnetName = subnetName;
+  }
+
+  /**
+   * Gather new wave data and offer to plotters
+   * 
+   * @param plotEndMs
+   *          Time of last sample of waveform
+   * @param dataSource
+   *          Who to ask for data
+   */
+  public void updateWave(long plotEndMs, SeismicDataSource dataSource) {
+    double t2 = Util.ewToJ2K(plotEndMs / 1000);
+    double t1 = t2 - SubnetPlotter.DURATION_S;
+    Wave w = dataSource.getWave(name.replace('_', ' '), t1, t2);
+    SliceWave wave = null;
+    if (w != null) {
+      w.detrend();
+      w.removeMean();
+      wave = new SliceWave(w);
+      wave.setSlice(t1, t2);
+      plot.setWave(wave);
+      wave = new SliceWave(w);
+      wave.setSlice(t1, t2);
+      thumb.setWave(wave);
+    } else {
+      plot.setWave(null);
+      thumb.setWave(null);
+    }
+  }
+
+  /**
+   * Create a full plot
+   * 
+   * @return The plot Renderer
+   */
+  public Renderer plot() {
+    if (writeData)
+      writeData();
+
+    return plot.plot();
+  }
+
+  private void writeData() {
+    String csv = plot.getCSV(dataTimestampFormat);
+    if (csv == null)
+      return;
+
+    String fileBase = generateFileBase(plot.getPlotEndMS());
+    File file = new File(fileBase);
+
+    file.getParentFile().mkdirs();
+
+    try {
+      if (!file.exists())
+        file.createNewFile();
+
+      FileWriter fw = new FileWriter(file, true);
+      fw.append(csv);
+      fw.close();
+    } catch (IOException e) {
     }
 
-    /**
-     * Gather new wave data and offer to plotters
-     * 
-     * @param plotEndMs
-     *            Time of last sample of waveform
-     * @param dataSource
-     *            Who to ask for data
-     */
-    public void updateWave(long plotEndMs, SeismicDataSource dataSource) {
-        double t2 = Util.ewToJ2K(plotEndMs / 1000);
-        double t1 = t2 - SubnetPlotter.DURATION_S;
-        Wave w = dataSource.getWave(name.replace('_', ' '), t1, t2);
-        SliceWave wave = null;
-        if (w != null) {
-            w.detrend();
-            w.removeMean();
-            wave = new SliceWave(w);
-            wave.setSlice(t1, t2);
-            plot.setWave(wave);
-            wave = new SliceWave(w);
-            wave.setSlice(t1, t2);
-            thumb.setWave(wave);
-        }
-    }
+  }
 
-    /**
-     * Create a full plot
-     * 
-     * @return The plot Renderer
-     */
-    public Renderer plot() {
-        if (writeData)
-            writeData();
+  private String generateFileBase(long timeMS) {
+    StringBuilder sb = new StringBuilder();
+    sb.append(dataPathRoot + '/');
+    if (networkName != null)
+      sb.append(networkName + '/');
+    sb.append(subnetName + '/');
+    sb.append(Time.format(dataFilePathFormat, timeMS));
 
-        return plot.plot();
-    }
+    sb.append('/' + name);
+    sb.append(Time.format(dataFileSuffixFormat, timeMS));
+    sb.append(".dat");
+    String name = sb.toString();
+    name = name.replaceAll("/+", Matcher.quoteReplacement(File.separator));
+    name = name.replaceAll("\\s+", "_");
+    return name;
+  }
 
-    private void writeData() {
-        String csv = plot.getCSV(dataTimestampFormat);
-        if (csv == null)
-            return;
-
-        String fileBase = generateFileBase(plot.getPlotEndMS());
-        File file = new File(fileBase);
-
-        file.getParentFile().mkdirs();
-
-        try {
-            if (!file.exists())
-                file.createNewFile();
-
-            FileWriter fw = new FileWriter(file, true);
-            fw.append(csv);
-            fw.close();
-        } catch (IOException e) {
-        }
-
-    }
-
-    private String generateFileBase(long timeMS) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(dataPathRoot + '/');
-        if (networkName != null)
-            sb.append(networkName + '/');
-        sb.append(subnetName + '/');
-        sb.append(Time.format(dataFilePathFormat, timeMS));
-
-        sb.append('/' + name);
-        sb.append(Time.format(dataFileSuffixFormat, timeMS));
-        sb.append(".dat");
-        String name = sb.toString();
-        name = name.replaceAll("/+", Matcher.quoteReplacement(File.separator));
-        name = name.replaceAll("\\s+", "_");
-        return name;
-    }
-
-    /**
-     * Create a thumbnail plot
-     * 
-     * @return The thumbnail Renderer
-     */
-    public Renderer plotThumb() {
-        return thumb.plot();
-    }
+  /**
+   * Create a thumbnail plot
+   * 
+   * @return The thumbnail Renderer
+   */
+  public Renderer plotThumb() {
+    return thumb.plot();
+  }
 
 }

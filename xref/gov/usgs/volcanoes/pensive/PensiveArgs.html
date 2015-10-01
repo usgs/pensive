@@ -18,12 +18,12 @@
 <a class="jxr_linenumber" name="L10" href="#L10">10</a>  <strong class="jxr_keyword">import</strong> com.martiansoftware.jsap.Parameter;
 <a class="jxr_linenumber" name="L11" href="#L11">11</a>  <strong class="jxr_keyword">import</strong> com.martiansoftware.jsap.ParseException;
 <a class="jxr_linenumber" name="L12" href="#L12">12</a>  
-<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">import</strong> gov.usgs.volcanoes.util.args.Args;
-<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <strong class="jxr_keyword">import</strong> gov.usgs.volcanoes.util.args.Arguments;
-<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <strong class="jxr_keyword">import</strong> gov.usgs.volcanoes.util.args.decorator.ConfigFileArg;
-<a class="jxr_linenumber" name="L16" href="#L16">16</a>  <strong class="jxr_keyword">import</strong> gov.usgs.volcanoes.util.args.decorator.CreateConfigArg;
-<a class="jxr_linenumber" name="L17" href="#L17">17</a>  <strong class="jxr_keyword">import</strong> gov.usgs.volcanoes.util.args.decorator.DateRangeArg;
-<a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">import</strong> gov.usgs.volcanoes.util.args.decorator.VerboseArg;
+<a class="jxr_linenumber" name="L13" href="#L13">13</a>  <strong class="jxr_keyword">import</strong> gov.usgs.volcanoes.core.args.Args;
+<a class="jxr_linenumber" name="L14" href="#L14">14</a>  <strong class="jxr_keyword">import</strong> gov.usgs.volcanoes.core.args.Arguments;
+<a class="jxr_linenumber" name="L15" href="#L15">15</a>  <strong class="jxr_keyword">import</strong> gov.usgs.volcanoes.core.args.decorator.ConfigFileArg;
+<a class="jxr_linenumber" name="L16" href="#L16">16</a>  <strong class="jxr_keyword">import</strong> gov.usgs.volcanoes.core.args.decorator.CreateConfigArg;
+<a class="jxr_linenumber" name="L17" href="#L17">17</a>  <strong class="jxr_keyword">import</strong> gov.usgs.volcanoes.core.args.decorator.DateRangeArg;
+<a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">import</strong> gov.usgs.volcanoes.core.args.decorator.VerboseArg;
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>  
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>  <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L21" href="#L21">21</a>  <em class="jxr_javadoccomment"> * Argument processor for Pensive</em>
@@ -51,51 +51,41 @@
 <a class="jxr_linenumber" name="L43" href="#L43">43</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">long</strong> endTime;
 <a class="jxr_linenumber" name="L44" href="#L44">44</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">final</strong> String configFileName;
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>  
-<a class="jxr_linenumber" name="L46" href="#L46">46</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../gov/usgs/volcanoes/pensive/PensiveArgs.html">PensiveArgs</a>(String[] commandLineArgs) {
-<a class="jxr_linenumber" name="L47" href="#L47">47</a>      	Arguments args = <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>      	<strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L49" href="#L49">49</a>      		args = <strong class="jxr_keyword">new</strong> Args(PROGRAM_NAME, EXPLANATION, PARAMETERS);
-<a class="jxr_linenumber" name="L50" href="#L50">50</a>  			args = <strong class="jxr_keyword">new</strong> ConfigFileArg(DEFAULT_CONFIG_FILENAME, args);
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>  			args = <strong class="jxr_keyword">new</strong> CreateConfigArg(EXAMPLE_CONFIG_FILENAME, args);
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>  			args = <strong class="jxr_keyword">new</strong> DateRangeArg(INPUT_TIME_FORMAT, args);
-<a class="jxr_linenumber" name="L53" href="#L53">53</a>  			args = <strong class="jxr_keyword">new</strong> VerboseArg(args);
-<a class="jxr_linenumber" name="L54" href="#L54">54</a>  		} <strong class="jxr_keyword">catch</strong> (JSAPException e1) {
-<a class="jxr_linenumber" name="L55" href="#L55">55</a>  			<em class="jxr_comment">// TODO Auto-generated catch block</em>
-<a class="jxr_linenumber" name="L56" href="#L56">56</a>  			e1.printStackTrace();
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>  		}
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>      	
-<a class="jxr_linenumber" name="L59" href="#L59">59</a>      	JSAPResult jsapResult = <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>  		<strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L61" href="#L61">61</a>  			jsapResult = args.parse(commandLineArgs);
-<a class="jxr_linenumber" name="L62" href="#L62">62</a>  		} <strong class="jxr_keyword">catch</strong> (Exception e) {
-<a class="jxr_linenumber" name="L63" href="#L63">63</a>  			LOGGER.error(<span class="jxr_string">"Cannot parse command line. ("</span> + e.getLocalizedMessage() + <span class="jxr_string">")"</span>);
-<a class="jxr_linenumber" name="L64" href="#L64">64</a>  			System.exit(1);
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>  		}
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>  		
-<a class="jxr_linenumber" name="L67" href="#L67">67</a>          verbose = jsapResult.getBoolean(<span class="jxr_string">"verbose"</span>);
-<a class="jxr_linenumber" name="L68" href="#L68">68</a>          LOGGER.debug(<span class="jxr_string">"Setting: verbose={}"</span>, verbose);
-<a class="jxr_linenumber" name="L69" href="#L69">69</a>  
-<a class="jxr_linenumber" name="L70" href="#L70">70</a>          Date startDate = jsapResult.getDate(<span class="jxr_string">"startTime"</span>);
-<a class="jxr_linenumber" name="L71" href="#L71">71</a>          <strong class="jxr_keyword">if</strong> (startDate == <strong class="jxr_keyword">null</strong>)
-<a class="jxr_linenumber" name="L72" href="#L72">72</a>          	startTime = Long.MIN_VALUE;
-<a class="jxr_linenumber" name="L73" href="#L73">73</a>          <strong class="jxr_keyword">else</strong>
-<a class="jxr_linenumber" name="L74" href="#L74">74</a>          	startTime = jsapResult.getDate(<span class="jxr_string">"startTime"</span>).getTime();
-<a class="jxr_linenumber" name="L75" href="#L75">75</a>          LOGGER.debug(<span class="jxr_string">"Setting: startTime={}"</span>, startTime);
-<a class="jxr_linenumber" name="L76" href="#L76">76</a>          
-<a class="jxr_linenumber" name="L77" href="#L77">77</a>          Date endDate = jsapResult.getDate(<span class="jxr_string">"endTime"</span>);
-<a class="jxr_linenumber" name="L78" href="#L78">78</a>          <strong class="jxr_keyword">if</strong> (endDate == <strong class="jxr_keyword">null</strong>)
-<a class="jxr_linenumber" name="L79" href="#L79">79</a>          	endTime = Long.MIN_VALUE;
-<a class="jxr_linenumber" name="L80" href="#L80">80</a>          <strong class="jxr_keyword">else</strong>
-<a class="jxr_linenumber" name="L81" href="#L81">81</a>          	endTime = jsapResult.getDate(<span class="jxr_string">"endTime"</span>).getTime();
-<a class="jxr_linenumber" name="L82" href="#L82">82</a>          LOGGER.debug(<span class="jxr_string">"Setting: endTime={}"</span>, endTime);
-<a class="jxr_linenumber" name="L83" href="#L83">83</a>  
-<a class="jxr_linenumber" name="L84" href="#L84">84</a>          configFileName = jsapResult.getString(<span class="jxr_string">"config-filename"</span>);
-<a class="jxr_linenumber" name="L85" href="#L85">85</a>          LOGGER.debug(<span class="jxr_string">"Setting: config-filename={}"</span>, configFileName);
-<a class="jxr_linenumber" name="L86" href="#L86">86</a>          
-<a class="jxr_linenumber" name="L87" href="#L87">87</a>          <strong class="jxr_keyword">if</strong> (jsapResult.getBoolean(<span class="jxr_string">"create-config"</span>))
-<a class="jxr_linenumber" name="L88" href="#L88">88</a>          	System.exit(1);
-<a class="jxr_linenumber" name="L89" href="#L89">89</a>      }
-<a class="jxr_linenumber" name="L90" href="#L90">90</a>  }
+<a class="jxr_linenumber" name="L46" href="#L46">46</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../gov/usgs/volcanoes/pensive/PensiveArgs.html">PensiveArgs</a>(String[] commandLineArgs) <strong class="jxr_keyword">throws</strong> Exception {
+<a class="jxr_linenumber" name="L47" href="#L47">47</a>          Arguments args = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>          args = <strong class="jxr_keyword">new</strong> Args(PROGRAM_NAME, EXPLANATION, PARAMETERS);
+<a class="jxr_linenumber" name="L49" href="#L49">49</a>          args = <strong class="jxr_keyword">new</strong> ConfigFileArg(DEFAULT_CONFIG_FILENAME, args);
+<a class="jxr_linenumber" name="L50" href="#L50">50</a>          args = <strong class="jxr_keyword">new</strong> CreateConfigArg(EXAMPLE_CONFIG_FILENAME, args);
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>          args = <strong class="jxr_keyword">new</strong> DateRangeArg(INPUT_TIME_FORMAT, args);
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>          args = <strong class="jxr_keyword">new</strong> VerboseArg(args);
+<a class="jxr_linenumber" name="L53" href="#L53">53</a>  
+<a class="jxr_linenumber" name="L54" href="#L54">54</a>          JSAPResult jsapResult = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>          jsapResult = args.parse(commandLineArgs);
+<a class="jxr_linenumber" name="L56" href="#L56">56</a>  
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>          verbose = jsapResult.getBoolean(<span class="jxr_string">"verbose"</span>);
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>          LOGGER.debug(<span class="jxr_string">"Setting: verbose={}"</span>, verbose);
+<a class="jxr_linenumber" name="L59" href="#L59">59</a>  
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>          Date startDate = jsapResult.getDate(<span class="jxr_string">"startTime"</span>);
+<a class="jxr_linenumber" name="L61" href="#L61">61</a>          <strong class="jxr_keyword">if</strong> (startDate == <strong class="jxr_keyword">null</strong>)
+<a class="jxr_linenumber" name="L62" href="#L62">62</a>              startTime = Long.MIN_VALUE;
+<a class="jxr_linenumber" name="L63" href="#L63">63</a>          <strong class="jxr_keyword">else</strong>
+<a class="jxr_linenumber" name="L64" href="#L64">64</a>              startTime = jsapResult.getDate(<span class="jxr_string">"startTime"</span>).getTime();
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>          LOGGER.debug(<span class="jxr_string">"Setting: startTime={}"</span>, startTime);
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>  
+<a class="jxr_linenumber" name="L67" href="#L67">67</a>          Date endDate = jsapResult.getDate(<span class="jxr_string">"endTime"</span>);
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>          <strong class="jxr_keyword">if</strong> (endDate == <strong class="jxr_keyword">null</strong>)
+<a class="jxr_linenumber" name="L69" href="#L69">69</a>              endTime = Long.MIN_VALUE;
+<a class="jxr_linenumber" name="L70" href="#L70">70</a>          <strong class="jxr_keyword">else</strong>
+<a class="jxr_linenumber" name="L71" href="#L71">71</a>              endTime = jsapResult.getDate(<span class="jxr_string">"endTime"</span>).getTime();
+<a class="jxr_linenumber" name="L72" href="#L72">72</a>          LOGGER.debug(<span class="jxr_string">"Setting: endTime={}"</span>, endTime);
+<a class="jxr_linenumber" name="L73" href="#L73">73</a>  
+<a class="jxr_linenumber" name="L74" href="#L74">74</a>          configFileName = jsapResult.getString(<span class="jxr_string">"config-filename"</span>);
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>          LOGGER.debug(<span class="jxr_string">"Setting: config-filename={}"</span>, configFileName);
+<a class="jxr_linenumber" name="L76" href="#L76">76</a>  
+<a class="jxr_linenumber" name="L77" href="#L77">77</a>          <strong class="jxr_keyword">if</strong> (jsapResult.getBoolean(<span class="jxr_string">"create-config"</span>))
+<a class="jxr_linenumber" name="L78" href="#L78">78</a>              System.exit(1);
+<a class="jxr_linenumber" name="L79" href="#L79">79</a>      }
+<a class="jxr_linenumber" name="L80" href="#L80">80</a>  }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2015. All rights reserved.</div>

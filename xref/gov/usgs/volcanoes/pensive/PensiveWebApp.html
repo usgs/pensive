@@ -26,8 +26,8 @@
 <a class="jxr_linenumber" name="L18" href="#L18">18</a>  <strong class="jxr_keyword">import</strong> freemarker.template.Template;
 <a class="jxr_linenumber" name="L19" href="#L19">19</a>  <strong class="jxr_keyword">import</strong> freemarker.template.TemplateException;
 <a class="jxr_linenumber" name="L20" href="#L20">20</a>  <strong class="jxr_keyword">import</strong> freemarker.template.TemplateExceptionHandler;
-<a class="jxr_linenumber" name="L21" href="#L21">21</a>  <strong class="jxr_keyword">import</strong> gov.usgs.volcanoes.pensive.plot.SubnetPlotter;
-<a class="jxr_linenumber" name="L22" href="#L22">22</a>  <strong class="jxr_keyword">import</strong> gov.usgs.volcanoes.util.configFile.ConfigFile;
+<a class="jxr_linenumber" name="L21" href="#L21">21</a>  <strong class="jxr_keyword">import</strong> gov.usgs.volcanoes.core.configfile.ConfigFile;
+<a class="jxr_linenumber" name="L22" href="#L22">22</a>  <strong class="jxr_keyword">import</strong> gov.usgs.volcanoes.pensive.plot.SubnetPlotter;
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>  
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>  <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>  <em class="jxr_javadoccomment"> * </em>
@@ -112,8 +112,8 @@
 <a class="jxr_linenumber" name="L104" href="#L104">104</a>             
 <a class="jxr_linenumber" name="L105" href="#L105">105</a>             Template template = cfg.getTemplate(<span class="jxr_string">"pensive.ftl"</span>);
 <a class="jxr_linenumber" name="L106" href="#L106">106</a>             String file = pathRoot + '/' + FILENAME;
-<a class="jxr_linenumber" name="L107" href="#L107">107</a>             file.replace(<span class="jxr_string">"/+"</span>, <span class="jxr_string">"/"</span>);
-<a class="jxr_linenumber" name="L108" href="#L108">108</a>             file.replace(<span class="jxr_string">"/"</span>, Matcher.quoteReplacement(File.separator));
+<a class="jxr_linenumber" name="L107" href="#L107">107</a>             file = file.replace(<span class="jxr_string">"/+"</span>, <span class="jxr_string">"/"</span>);
+<a class="jxr_linenumber" name="L108" href="#L108">108</a>             file = file.replace(<span class="jxr_string">"/"</span>, Matcher.quoteReplacement(File.separator));
 <a class="jxr_linenumber" name="L109" href="#L109">109</a>             FileWriter fw = <strong class="jxr_keyword">new</strong> FileWriter(file);
 <a class="jxr_linenumber" name="L110" href="#L110">110</a>             template.process(root, fw);
 <a class="jxr_linenumber" name="L111" href="#L111">111</a>             fw.close();

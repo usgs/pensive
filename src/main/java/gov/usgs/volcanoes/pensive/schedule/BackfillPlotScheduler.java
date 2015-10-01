@@ -2,7 +2,7 @@ package gov.usgs.volcanoes.pensive.schedule;
 
 import java.util.Date;
 
-import gov.usgs.volcanoes.util.configFile.ConfigFile;
+import gov.usgs.volcanoes.core.configfile.ConfigFile;
 import gov.usgs.volcanoes.pensive.PlotJob;
 import gov.usgs.volcanoes.pensive.plot.SubnetPlotter;
 

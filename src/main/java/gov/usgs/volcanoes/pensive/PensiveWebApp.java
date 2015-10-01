@@ -18,8 +18,8 @@ import freemarker.template.DefaultObjectWrapper;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
+import gov.usgs.volcanoes.core.configfile.ConfigFile;
 import gov.usgs.volcanoes.pensive.plot.SubnetPlotter;
-import gov.usgs.volcanoes.util.configFile.ConfigFile;
 
 /**
  * 

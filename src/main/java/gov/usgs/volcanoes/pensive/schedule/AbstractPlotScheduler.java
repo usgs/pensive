@@ -10,7 +10,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import gov.usgs.volcanoes.util.configFile.ConfigFile;
+import gov.usgs.volcanoes.core.configfile.ConfigFile;
 import gov.usgs.volcanoes.pensive.PlotJob;
 import gov.usgs.volcanoes.pensive.WaveSource;
 import gov.usgs.volcanoes.pensive.plot.SubnetPlotter;

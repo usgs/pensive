@@ -150,9 +150,13 @@ public class Pensive {
                 }
 
                 String dataSource = subnetConfig.getString("dataSource");
-                AbstractPlotScheduler scheduler = plotScheduler.get(dataSource);
-                LOGGER.info("Assigning subnet " + subnet + " to " + dataSource);
-                scheduler.add(new SubnetPlotter(network, subnet, subnetConfig));
+                if (dataSource != null) {
+                  AbstractPlotScheduler scheduler = plotScheduler.get(dataSource);
+                  LOGGER.info("Assigning subnet " + subnet + " to " + dataSource);
+                  scheduler.add(new SubnetPlotter(network, subnet, subnetConfig));                  
+                } else {
+                  LOGGER.error("Cannot find dataSource for subnet {}. I'll skip it this time.", subnet);
+                }
             }
             netConfig.putList("subnet", subnets);
         }

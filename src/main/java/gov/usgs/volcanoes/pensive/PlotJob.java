@@ -1,71 +1,72 @@
-package gov.usgs.volcanoes.pensive;
+/**
+ * I waive copyright and related rights in the this work worldwide
+ * through the CC0 1.0 Universal public domain dedication.
+ * https://creativecommons.org/publicdomain/zero/1.0/legalcode
+ */
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+package gov.usgs.volcanoes.pensive;
 
 import gov.usgs.volcanoes.pensive.plot.SubnetPlotter;
 
 /**
- * A single plot job
- * 
- * @author Tom Parker
+ * A single plot job.
  *
- *I waive copyright and related rights in the this work worldwide through the CC0 1.0 Universal public domain dedication.
- * https://creativecommons.org/publicdomain/zero/1.0/legalcode
+ * @author Tom Parker
  */
 public class PlotJob implements Comparable<PlotJob> {
 
-	/** my logger */
-	private static final Logger LOGGER = LoggerFactory.getLogger(PlotJob.class);
+  /** Time of last sample plotted. */
+  public final long plotEndMs;
 
-	/** Time of last sample plotted */
-	public final long plotEndMs;
-	
-	/** when to create the plot */
-	public final long plotTimeMs;
+  /** when to create the plot. */
+  public final long plotTimeMs;
 
-	/** my subnet */
-	public final SubnetPlotter subnet;
+  /** my subnet. */
+  public final SubnetPlotter subnet;
 
 
-	/**
-	 * Class constructor which uses the most recent time slice as the time of
-	 * the last sample to be plotted.
-	 * 
-	 * @param subnet
-	 *            my subnet
-	 */
-	public PlotJob(SubnetPlotter subnet) {
-		this.subnet = subnet;
-		this.plotEndMs = findPlotEnd();
-		plotTimeMs = plotEndMs + subnet.embargoMs;
-	}
+  /**
+   * Class constructor which uses the most recent time slice as the time of
+   * the last sample to be plotted.
+   *
+   * @param subnet my subnet
+   */
+  public PlotJob(final SubnetPlotter subnet) {
+    this.subnet = subnet;
+    this.plotEndMs = findPlotEnd();
+    plotTimeMs = plotEndMs + subnet.embargoMs;
+  }
 
-   public PlotJob(SubnetPlotter subnet, long plotEndMs) {
-	        this.subnet = subnet;
-	        this.plotEndMs = plotEndMs;
-	        plotTimeMs = plotEndMs + subnet.embargoMs;
-	    }
+  /**
+   * Class constructor with a specific plot time.
+   * 
+   * @param subnet my subnet
+   * @param plotEndMs The end of the plot
+   */
+  public PlotJob(final SubnetPlotter subnet, final long plotEndMs) {
+    this.subnet = subnet;
+    this.plotEndMs = plotEndMs;
+    plotTimeMs = plotEndMs + subnet.embargoMs;
+  }
 
-	/**
-	 * Calculate the time of the last sample in the most recent time slice.
-	 * 
-	 * @return Time of the last sample in the most recent time slice.
-	 */
-	private long findPlotEnd() {
-		long startTime = System.currentTimeMillis();
-		startTime -= startTime % (SubnetPlotter.DURATION_S * 1000);
+  /**
+   * Calculate the time of the last sample in the most recent time slice.
+   *
+   * @return Time of the last sample in the most recent time slice.
+   */
+  private long findPlotEnd() {
+    long startTime = System.currentTimeMillis();
+    startTime -= startTime % (SubnetPlotter.DURATION_S * 1000);
 
-		return startTime;
-	}
+    return startTime;
+  }
 
-	/**
-	 * Order plots by increasing last sample time
-	 * 
-	 * @param o
-	 *     The PlotJob to compare to
-	 */
-	public int compareTo(PlotJob o) {
-		return (int) (plotTimeMs - o.plotTimeMs);
-	}
+  /**
+   * Order plots by increasing last sample time.
+   *
+   * @param other The PlotJob to compare to
+   */
+  public int compareTo(final PlotJob other) {
+    return (int) (plotTimeMs - other.plotTimeMs);
+  }
 }

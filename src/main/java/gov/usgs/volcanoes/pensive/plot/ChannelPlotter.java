@@ -14,7 +14,12 @@ import gov.usgs.plot.render.wave.MinuteMarkingWaveRenderer;
 import gov.usgs.plot.render.wave.SliceWaveRenderer;
 import gov.usgs.plot.render.wave.SpectrogramRenderer;
 import gov.usgs.util.Time;
+import gov.usgs.util.Util;
 import gov.usgs.volcanoes.core.configfile.ConfigFile;
+import gov.usgs.volcanoes.pensive.Channel;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -33,6 +38,10 @@ public abstract class ChannelPlotter {
 
   /** The ratio of a waveform plot to its spectrogram plot. */
   public static final double WAVE_RATIO = .25;
+
+
+  /** my logger. */
+  private static final Logger LOGGER = LoggerFactory.getLogger(ChannelPlotter.class);
 
   public static final double DEFAULT_OVERLAP = 0.859375;
   public static final boolean DEFAULT_LOG_POWER = true;
@@ -128,8 +137,7 @@ public abstract class ChannelPlotter {
   /**
    * Create a SpectrogramRendere and apply my settings.
    * 
-   * @param config
-   *          my config stanza
+   * @param config my config stanza
    * 
    * @return my SpectrogramRenderer
    * 
@@ -192,7 +200,6 @@ public abstract class ChannelPlotter {
     this.wave = wave;
 
     if (wave != null) {
-
       double plotStart = wave.getStartTime();
       double plotEnd = wave.getStartTime() + SubnetPlotter.DURATION_S;
 
@@ -219,10 +226,10 @@ public abstract class ChannelPlotter {
    */
   public BasicFrameRenderer plot() {
 
-    if (wave == null || wave.samples() < 1) {
-      return noDataRenderer();
-    } else {
+    if (wave != null && wave.samples() > 0) {
       return plotFrame;
+    } else {
+      return noDataRenderer();
     }
   }
 

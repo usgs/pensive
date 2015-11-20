@@ -198,7 +198,8 @@ public abstract class ChannelPlotter {
    */
   public void setWave(SliceWave wave) {
     this.wave = wave;
-
+    waveRenderer.setWave(wave);
+    spectrogramRenderer.setWave(wave);
     if (wave != null) {
       double plotStart = wave.getStartTime();
       double plotEnd = wave.getStartTime() + SubnetPlotter.DURATION_S;

@@ -13,8 +13,9 @@ import gov.usgs.plot.render.TextRenderer;
 import gov.usgs.plot.render.wave.MinuteMarkingWaveRenderer;
 import gov.usgs.plot.render.wave.SliceWaveRenderer;
 import gov.usgs.plot.render.wave.SpectrogramRenderer;
-import gov.usgs.util.Time;
 import gov.usgs.volcanoes.core.configfile.ConfigFile;
+import gov.usgs.volcanoes.core.time.J2kSec;
+import gov.usgs.volcanoes.core.time.Time;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -207,7 +208,7 @@ public abstract class ChannelPlotter {
       spectrogramRenderer.createDefaultFrameDecorator();
       spectrogramRenderer.update();
 
-      plotEndMs = (long) ((plotEnd - Time.UNIXZERO) * 1000);
+      plotEndMs = (long) ((plotEnd - J2kSec.UNIXZERO) * 1000);
     }
   }
 

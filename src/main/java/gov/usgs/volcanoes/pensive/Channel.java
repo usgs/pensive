@@ -9,9 +9,9 @@ package gov.usgs.volcanoes.pensive;
 import gov.usgs.plot.data.SliceWave;
 import gov.usgs.plot.data.Wave;
 import gov.usgs.plot.render.Renderer;
-import gov.usgs.util.Time;
-import gov.usgs.util.Util;
 import gov.usgs.volcanoes.core.configfile.ConfigFile;
+import gov.usgs.volcanoes.core.time.J2kSec;
+import gov.usgs.volcanoes.core.time.Time;
 import gov.usgs.volcanoes.pensive.plot.ChannelPlotter;
 import gov.usgs.volcanoes.pensive.plot.FullPlotter;
 import gov.usgs.volcanoes.pensive.plot.SubnetPlotter;
@@ -112,7 +112,7 @@ public class Channel {
    * @param dataSource Who to ask for data
    */
   public void updateWave(final long plotEndMs, final SeismicDataSource dataSource) {
-    final double t2 = Util.ewToJ2K(plotEndMs / 1000);
+    final double t2 = J2kSec.fromEpoch(plotEndMs);
     final double t1 = t2 - SubnetPlotter.DURATION_S;
     final Wave w = dataSource.getWave(name.replace('_', ' '), t1, t2);
     if (w != null && w.numSamples() > 0) {

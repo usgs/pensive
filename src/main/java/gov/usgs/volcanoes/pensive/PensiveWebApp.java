@@ -1,6 +1,6 @@
 /**
- * I waive copyright and related rights in the this work worldwide
- * through the CC0 1.0 Universal public domain dedication.
+ * I waive copyright and related rights in the this work worldwide through the CC0 1.0
+ * Universal public domain dedication.
  * https://creativecommons.org/publicdomain/zero/1.0/legalcode
  */
 
@@ -30,9 +30,11 @@ import java.util.regex.Matcher;
 
 
 /**
- * Create single page application for Pensive.
+ * Create a single-page web application to allow viewing and navigation of images created by
+ * pensive.
  * 
  * @author Tom Parker
+ * 
  */
 public class PensiveWebApp {
   /** my logger. */
@@ -44,23 +46,23 @@ public class PensiveWebApp {
   public static final String FILENAME = "index.html";
 
   /** Freemarker settings. */
-  private final Map<String, Object> root;
+  private Map<String, Object> root;
 
   /** my configuration. */
   private Configuration cfg;
 
   /** My subnets. */
-  private final Map<String, List<String>> subnets;
+  private Map<String, List<String>> subnets;
 
   /** root of output. */
   private final String pathRoot;
 
   /**
    * Class constructor.
-   *
+   * 
    * @param config My configuration stanza
    */
-  public PensiveWebApp(final ConfigFile config) {
+  public PensiveWebApp(ConfigFile config) {
     pathRoot = config.getString("pathRoot", DEFAULT_PATH_ROOT);
 
     root = new HashMap<String, Object>();
@@ -78,7 +80,7 @@ public class PensiveWebApp {
 
     try {
       initializeTemplateEngine();
-    } catch (final IOException e) {
+    } catch (IOException e) {
       LOGGER.error("cannot write HTML");
     }
 
@@ -86,13 +88,13 @@ public class PensiveWebApp {
 
   /**
    * Initialize FreeMarker.
-   *
-   * @throws IOException When things go wrong
+   * 
+   * @throws IOException when things go wrong
    */
   protected void initializeTemplateEngine() throws IOException {
     cfg = new Configuration();
     cfg.setTemplateLoader(new ClassTemplateLoader(getClass(), "/html"));
-    final DefaultObjectWrapper obj = new DefaultObjectWrapper();
+    DefaultObjectWrapper obj = new DefaultObjectWrapper();
     obj.setExposeFields(true);
     cfg.setObjectWrapper(obj);
 
@@ -106,29 +108,28 @@ public class PensiveWebApp {
    */
   public void writeHtml() {
     try {
-      final File pRoot = new File(pathRoot);
-      if (!pRoot.exists()) {
-        pRoot.mkdirs();
+      File rootDir = new File(pathRoot);
+      if (!rootDir.exists()) {
+        rootDir.mkdirs();
       }
-      
-      final Template template = cfg.getTemplate("pensive.ftl");
+      Template template = cfg.getTemplate("pensive.ftl");
       String file = pathRoot + '/' + FILENAME;
       file = file.replace("/+", "/");
       file = file.replace("/", Matcher.quoteReplacement(File.separator));
-      final FileWriter fw = new FileWriter(file);
+      FileWriter fw = new FileWriter(file);
       template.process(root, fw);
       fw.close();
-    } catch (final IOException e) {
+    } catch (IOException e) {
       LOGGER.error(e.getLocalizedMessage());
-    } catch (final TemplateException e) {
+    } catch (TemplateException e) {
       LOGGER.error(e.getLocalizedMessage());
     }
   }
 
-  /** 
+  /**
    * add a subnet to a network list.
    */
-  public void addSubnet(final String network, final String subnet) {
+  public void addSubnet(String network, String subnet) {
     List<String> subs = subnets.get(network);
     if (subs == null) {
       subs = new ArrayList<String>();

@@ -115,11 +115,10 @@ public class Channel {
     final double t2 = Util.ewToJ2K(plotEndMs / 1000);
     final double t1 = t2 - SubnetPlotter.DURATION_S;
     final Wave w = dataSource.getWave(name.replace('_', ' '), t1, t2);
-    SliceWave wave = null;
     if (w != null && w.numSamples() > 0) {
       w.detrend();
       w.removeMean();
-      wave = new SliceWave(w);
+      SliceWave wave = new SliceWave(w);
       wave.setSlice(t1, t2);
       plot.setWave(wave);
       wave = new SliceWave(w);

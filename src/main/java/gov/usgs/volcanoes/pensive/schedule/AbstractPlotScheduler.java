@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.PriorityBlockingQueue;
 
 /**
  * Create a pool of connections to a single server and assign plot jobs to
@@ -66,7 +66,7 @@ public abstract class AbstractPlotScheduler implements Runnable {
     this.name = name;
     numThreads = config.getInt("threads", DEFAULT_NUMTHREADS);
     subnets = new LinkedList<SubnetPlotter>();
-    plotJobs = new LinkedBlockingQueue<PlotJob>();
+    plotJobs = new PriorityBlockingQueue<PlotJob>();
     threads = new LinkedList<Thread>();
     this.config = config;
   }

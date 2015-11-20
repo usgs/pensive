@@ -140,12 +140,14 @@ public class SubnetPlotter {
   }
 
   /**
-   * Produce both a full and a thumbnail PNG representing my subnet.
-   *
+   * Produce both a full and a thumbnail PNG representing my subnet. Plotting functions are not
+   * thread safe. A subnet should not be plotted by multiple threads
+   * concurrently.
+   * 
    * @param plotEndMs time of last sample on plot
    * @param dataSource source of wave data
    */
-  public void plot(final long plotEndMs, final SeismicDataSource dataSource) {
+  public synchronized void plot(final long plotEndMs, final SeismicDataSource dataSource) {
     final Plot plot = new Plot(plotDimension.width, plotDimension.height);
     final Plot thumb = new Plot(thumbDimension.width, thumbDimension.height);
 

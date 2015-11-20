@@ -1,10 +1,6 @@
 /**
  * pensive.js
  *
- * A faithful JavaScript implementation of Java's SimpleDateFormat's format
- * method. All pattern layouts present in the Java implementation are
- * implemented here except for z, the text version of the date's time zone.
- *
  * Author: Tom Parker
  * 
  *

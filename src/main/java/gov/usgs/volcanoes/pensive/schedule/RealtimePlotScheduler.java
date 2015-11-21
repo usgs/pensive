@@ -10,8 +10,20 @@ import gov.usgs.volcanoes.core.configfile.ConfigFile;
 import gov.usgs.volcanoes.pensive.PlotJob;
 import gov.usgs.volcanoes.pensive.plot.SubnetPlotter;
 
+/**
+ * A scheduler to queue plots for the most recent time slot.
+ * 
+ * @author Tom Parker
+ *
+ */
 public class RealtimePlotScheduler extends AbstractPlotScheduler {
 
+  /**
+   * Class constructor.
+   * 
+   * @param name scheduler name
+   * @param config scheduler config
+   */
   public RealtimePlotScheduler(final String name, final ConfigFile config) {
     super(name, config);
   }

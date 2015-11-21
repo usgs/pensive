@@ -1,15 +1,14 @@
 /**
- * I waive copyright and related rights in the this work worldwide
- * through the CC0 1.0 Universal public domain dedication.
- * https://creativecommons.org/publicdomain/zero/1.0/legalcode
+ * I waive copyright and related rights in the this work worldwide through the CC0 1.0 Universal
+ * public domain dedication. https://creativecommons.org/publicdomain/zero/1.0/legalcode
  */
 
 package gov.usgs.volcanoes.pensive.plot;
 
 import gov.usgs.plot.Plot;
 import gov.usgs.plot.PlotException;
-import gov.usgs.util.Time;
 import gov.usgs.volcanoes.core.configfile.ConfigFile;
+import gov.usgs.volcanoes.core.time.Time;
 import gov.usgs.volcanoes.pensive.Channel;
 import gov.usgs.volcanoes.swarm.data.SeismicDataSource;
 
@@ -32,15 +31,20 @@ public class SubnetPlotter {
   /** my logger. */
   private static final Logger LOGGER = LoggerFactory.getLogger(SubnetPlotter.class);
 
+  /** Where to put the files. */
   public static final String DEFAULT_PATH_ROOT = "html";
+  
+  /** How to format the path. */
   public static final String DEFAULT_FILE_PATH_FORMAT = "yyyy/DDD";
+  
+  /** How to format the filename suffix. */
   public static final String DEFAULT_FILE_SUFFIX_FORMAT = "_yyyyMMdd-HHmm";
 
-  public static final int DEFAULT_PLOT_WIDTH = 576;
-  public static final int DEFAULT_PLOT_HEIGHT = 756;
-  public static final int DEFAULT_THUMB_WIDTH = 151;
-  public static final int DEFAULT_THUMB_HEIGHT = 198;
-  public static final int DEFAULT_EMBARGO = 5;
+  private static final int DEFAULT_PLOT_WIDTH = 576;
+  private static final int DEFAULT_PLOT_HEIGHT = 756;
+  private static final int DEFAULT_THUMB_WIDTH = 151;
+  private static final int DEFAULT_THUMB_HEIGHT = 198;
+  private static final int DEFAULT_EMBARGO = 5;
 
   /** width of plot decorations in pixels. */
   public static final int LABEL_HEIGHT = 35;
@@ -141,8 +145,7 @@ public class SubnetPlotter {
 
   /**
    * Produce both a full and a thumbnail PNG representing my subnet. Plotting functions are not
-   * thread safe. A subnet should not be plotted by multiple threads
-   * concurrently.
+   * thread safe. A subnet should not be plotted by multiple threads concurrently.
    * 
    * @param plotEndMs time of last sample on plot
    * @param dataSource source of wave data

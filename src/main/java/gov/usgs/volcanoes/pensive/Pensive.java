@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class Pensive {
 
-  public static final boolean DEFAULT_WRITE_HTML = true;
+  private static final boolean DEFAULT_WRITE_HTML = true;
 
   static {
     TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
@@ -71,6 +71,13 @@ public class Pensive {
     }
   }
 
+  /**
+   * Class constructor used for back-filling.
+   * 
+   * @param configFile my config file
+   * @param startTime time of first plot
+   * @param endTime time of last plot. May be in the future.
+   */
   public Pensive(final ConfigFile configFile, final Date startTime, final Date endTime) {
     super();
   }

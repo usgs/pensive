@@ -29,18 +29,27 @@ import java.util.Date;
 public class PensiveArgs {
   private static final Logger LOGGER = LoggerFactory.getLogger(PensiveArgs.class);
 
-  public static final String EXAMPLE_CONFIG_FILENAME = "pensive-example.config";
-  public static final String DEFAULT_CONFIG_FILENAME = "pensive.config";
+  private static final String EXAMPLE_CONFIG_FILENAME = "pensive-example.config";
+  private static final String DEFAULT_CONFIG_FILENAME = "pensive.config";
 
-  public static final String PROGRAM_NAME = "java -jar gov.usgs.volcanoes.pensive.Pensive";
-  public static final String EXPLANATION = "I am the Pensive server\n";
+  private static final String PROGRAM_NAME = "java -jar gov.usgs.volcanoes.pensive.Pensive";
+  private static final String EXPLANATION = "I am the Pensive server\n";
+  
+  /** format of time on cmd line */
   public static final String INPUT_TIME_FORMAT = "yyyyMMddHHmm";
 
   private static final Parameter[] PARAMETERS = new Parameter[] {};
 
+  /** If true, log more. */
   public final boolean verbose;
+  
+  /** Time of first plot. May be in the future. */
   public final long startTime;
+  
+  /** Time of last plot. May be in the future. */
   public final long endTime;
+  
+  /** my config file. */
   public final String configFileName;
 
   /**

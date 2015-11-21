@@ -85,6 +85,8 @@ public class Channel {
    * @param thumbDimension Dimension of the thumbnail plot
    * @param decorateX If true decorate x-axis on full plot
    * @param config My config stanza
+   * @param networkName my network name
+   * @param subnetName my subnet name
    */
   public Channel(final String channel, final int index, final Dimension plotDimension,
       final Dimension thumbDimension, final boolean decorateX, final ConfigFile config,

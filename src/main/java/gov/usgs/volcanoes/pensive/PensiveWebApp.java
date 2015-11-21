@@ -40,8 +40,6 @@ public class PensiveWebApp {
   /** my logger. */
   private static final Logger LOGGER = LoggerFactory.getLogger(PensiveWebApp.class);
 
-  public static final String DEFAULT_PATH_ROOT = "html/";
-
   /** filename of html file. */
   public static final String FILENAME = "index.html";
 
@@ -63,7 +61,7 @@ public class PensiveWebApp {
    * @param config My configuration stanza
    */
   public PensiveWebApp(ConfigFile config) {
-    pathRoot = config.getString("pathRoot", DEFAULT_PATH_ROOT);
+    pathRoot = config.getString("pathRoot", SubnetPlotter.DEFAULT_PATH_ROOT);
 
     root = new HashMap<String, Object>();
 
@@ -128,6 +126,9 @@ public class PensiveWebApp {
 
   /**
    * add a subnet to a network list.
+   * 
+   * @param network network of subnet to add
+   * @param subnet name of subnet to add
    */
   public void addSubnet(String network, String subnet) {
     List<String> subs = subnets.get(network);

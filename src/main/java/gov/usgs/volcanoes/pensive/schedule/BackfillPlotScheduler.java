@@ -12,15 +12,33 @@ import gov.usgs.volcanoes.pensive.plot.SubnetPlotter;
 
 import java.util.Date;
 
+/**
+ * A scheduler to batch a timespan of images.
+ * 
+ * @author Tom Parker
+ *
+ */
 public class BackfillPlotScheduler extends AbstractPlotScheduler {
 
   private long startTime;
   private long endTime;
 
+  /**
+   * Class constructor.
+   * 
+   * @param name scheduler name
+   * @param config scheduler config stanza
+   */
   public BackfillPlotScheduler(final String name, final ConfigFile config) {
     super(name, config);
   }
 
+  /**
+   * Set time span.
+   * 
+   * @param startTime time of first plot
+   * @param endTime time of last plot
+   */
   public void setRange(final long startTime, final long endTime) {
     this.startTime = startTime;
     this.endTime = endTime;

@@ -1,7 +1,6 @@
 /**
- * I waive copyright and related rights in the this work worldwide
- * through the CC0 1.0 Universal public domain dedication.
- * https://creativecommons.org/publicdomain/zero/1.0/legalcode
+ * I waive copyright and related rights in the this work worldwide through the CC0 1.0 Universal
+ * public domain dedication. https://creativecommons.org/publicdomain/zero/1.0/legalcode
  */
 
 package gov.usgs.volcanoes.pensive.plot;
@@ -35,14 +34,14 @@ public abstract class ChannelPlotter {
   /** The ratio of a waveform plot to its spectrogram plot. */
   public static final double WAVE_RATIO = .25;
 
-  public static final double DEFAULT_OVERLAP = 0.859375;
-  public static final boolean DEFAULT_LOG_POWER = true;
-  public static final double DEFAULT_MIN_FREQ = 0;
-  public static final double DEFAULT_MAX_FREQ = 10;
-  public static final int DEFAULT_NFFT = 0;
-  public static final int DEFAULT_BIN_SIZE = 256;
-  public static final int DEFAULT_MAX_POWER = 120;
-  public static final int DEFAULT_MIN_POWER = 30;
+  private static final double DEFAULT_OVERLAP = 0.859375;
+  private static final boolean DEFAULT_LOG_POWER = true;
+  private static final double DEFAULT_MIN_FREQ = 0;
+  private static final double DEFAULT_MAX_FREQ = 10;
+  private static final int DEFAULT_NFFT = 0;
+  private static final int DEFAULT_BIN_SIZE = 256;
+  private static final int DEFAULT_MAX_POWER = 120;
+  private static final int DEFAULT_MIN_POWER = 30;
 
   /** my wave data. */
   protected SliceWave wave;
@@ -95,17 +94,13 @@ public abstract class ChannelPlotter {
   /**
    * Class constructor.
    * 
-   * @param name
-   *          My name
+   * @param name My name
    * 
-   * @param index
-   *          My position on the subnet plot
+   * @param index My position on the subnet plot
    * 
-   * @param plotDimension
-   *          The dimension of the plot
+   * @param plotDimension The dimension of the plot
    * 
-   * @param config
-   *          My configuration stanza
+   * @param config My configuration stanza
    */
   public ChannelPlotter(String name, int index, Dimension plotDimension, ConfigFile config) {
     this.name = name;
@@ -208,7 +203,7 @@ public abstract class ChannelPlotter {
       spectrogramRenderer.createDefaultFrameDecorator();
       spectrogramRenderer.update();
 
-      plotEndMs = (long) ((plotEnd - J2kSec.UNIXZERO) * 1000);
+      plotEndMs = J2kSec.asEpoch(plotEnd);
     }
   }
 
@@ -267,7 +262,7 @@ public abstract class ChannelPlotter {
     if (spectrogram == null) {
       return null;
     }
-    
+
     double[][] buffer = spectrogram.getSpectraAmplitude();
 
     long time = plotEndMs - (SubnetPlotter.DURATION_S * 1000);

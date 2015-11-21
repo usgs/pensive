@@ -28,9 +28,16 @@ public class WaveSource implements Runnable {
   /** my logger. */
   private static final Logger LOGGER = LoggerFactory.getLogger("gov.usgs");
 
+  /** default wave server type. */
   public static final String DEFAULT_TYPE = "wws";
+  
+  /** default wave server. */
   public static final String DEFAULT_HOST = "localhost";
+  
+  /** default port. */
   public static final int DEFAULT_PORT = 16022;
+  
+  /** default timeout. */
   public static final int DEFAULT_TIMEOUT_S = 15;
 
   private boolean shouldRun;

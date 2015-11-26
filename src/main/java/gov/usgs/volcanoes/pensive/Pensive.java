@@ -1,7 +1,6 @@
 /**
- * I waive copyright and related rights in the this work worldwide
- * through the CC0 1.0 Universal public domain dedication.
- * https://creativecommons.org/publicdomain/zero/1.0/legalcode
+ * I waive copyright and related rights in the this work worldwide through the CC0 1.0 Universal
+ * public domain dedication. https://creativecommons.org/publicdomain/zero/1.0/legalcode
  */
 
 package gov.usgs.volcanoes.pensive;
@@ -54,8 +53,7 @@ public class Pensive {
   /**
    * Class constructor.
    *
-   * @param configFile
-   *          my config file
+   * @param configFile my config file
    */
   public Pensive(final ConfigFile configFile) {
 
@@ -132,7 +130,7 @@ public class Pensive {
     if (networks == null) {
       throw new RuntimeException("No network directives found.");
     }
-    
+
     final Iterator<String> networkIt = networks.iterator();
     while (networkIt.hasNext()) {
       final String network = networkIt.next();
@@ -244,9 +242,8 @@ public class Pensive {
     final PensiveArgs config = new PensiveArgs(args);
 
     ConfigFile cf = null;
-    try {
-      cf = new ConfigFile(config.configFileName);
-    } catch (final FileNotFoundException e) {
+    cf = new ConfigFile(config.configFileName);
+    if (!cf.wasSuccessfullyRead()) {
       LOGGER.error("Couldn't find config file " + config.configFileName
           + ". Use '-c' to create an example config.");
       System.exit(1);

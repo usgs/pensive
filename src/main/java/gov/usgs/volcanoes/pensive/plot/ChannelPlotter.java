@@ -203,7 +203,7 @@ public abstract class ChannelPlotter {
       spectrogramRenderer.createDefaultFrameDecorator();
       spectrogramRenderer.update();
 
-      plotEndMs = J2kSec.asEpochMs(plotEnd);
+      plotEndMs = J2kSec.asEpoch(plotEnd);
     }
   }
 

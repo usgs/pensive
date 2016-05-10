@@ -197,4 +197,9 @@ public class Channel {
     return thumb.plot();
   }
 
+  public void flushWave() {
+    plot.setWave(null);
+    thumb.setWave(null);
+  }
+
 }

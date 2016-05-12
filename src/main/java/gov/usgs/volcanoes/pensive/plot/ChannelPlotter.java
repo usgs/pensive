@@ -16,6 +16,9 @@ import gov.usgs.volcanoes.core.configfile.ConfigFile;
 import gov.usgs.volcanoes.core.time.J2kSec;
 import gov.usgs.volcanoes.core.time.Time;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -28,6 +31,8 @@ import java.awt.Font;
  */
 public abstract class ChannelPlotter {
 
+  private static final Logger LOGGER = LoggerFactory.getLogger(ChannelPlotter.class);
+  
   /** Font used to indicate no data available. */
   public static final Color NO_DATA_TEXT_COLOR = new Color(160, 41, 41);
 
@@ -203,7 +208,7 @@ public abstract class ChannelPlotter {
       spectrogramRenderer.createDefaultFrameDecorator();
       spectrogramRenderer.update();
 
-      plotEndMs = J2kSec.asEpochMs(plotEnd);
+      plotEndMs = J2kSec.asEpoch(plotEnd);
     }
   }
 

@@ -11,6 +11,9 @@ import gov.usgs.plot.render.wave.SliceWaveRenderer;
 import gov.usgs.plot.render.wave.SpectrogramRenderer;
 import gov.usgs.volcanoes.core.configfile.ConfigFile;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.awt.Dimension;
 import java.awt.Font;
 
@@ -22,6 +25,8 @@ import java.awt.Font;
  */
 public class FullPlotter extends ChannelPlotter {
 
+  private static final Logger LOGGER = LoggerFactory.getLogger(FullPlotter.class);
+  
   /** Font used to indicate that no data was available. */
   public static final Font NO_DATA_FONT = Font.decode("dialog-PLAIN-36");
 
@@ -60,7 +65,7 @@ public class FullPlotter extends ChannelPlotter {
     spectrogramRenderer.yTickMarks = true;
     spectrogramRenderer.yTickValues = true;
     spectrogramRenderer.xTickMarks = true;
-    spectrogramRenderer.setYLabelText(name);
+    spectrogramRenderer.setYLabelText(name.replace(' ', '_'));
 
     int top = index * plotDimension.height;
     spectrogramRenderer.setLocation(LABEL_WIDTH, top + waveHeight + LABEL_HEIGHT,

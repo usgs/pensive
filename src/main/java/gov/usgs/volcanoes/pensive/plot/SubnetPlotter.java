@@ -165,6 +165,10 @@ public class SubnetPlotter {
 
     writePng(plot, fileBase + ".png");
     writePng(thumb, fileBase + "_thumb.png");
+    
+    for (final Channel channel : channels) {
+      channel.flushWave();
+    }
   }
 
   /**

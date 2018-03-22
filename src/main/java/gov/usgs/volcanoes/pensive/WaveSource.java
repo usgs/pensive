@@ -75,6 +75,8 @@ public class WaveSource implements Runnable {
       dsString = String.format("%s;wws:%s:%d:%d:%d", name, host, port, timeout * 1000, compress);
     } else if (type.equals("wsv")) {
       dsString = String.format("%s;ws:%s:%d:%d:1800:1000:UTC", name, host, port, timeout * 1000);
+    } else if (type.equals("sls")) {
+    	dsString = String.format("%s;sls:%s:%d", name, host, port);
     }
     dataSource = DataSourceType.parseConfig(dsString);
     dataSource.establish();

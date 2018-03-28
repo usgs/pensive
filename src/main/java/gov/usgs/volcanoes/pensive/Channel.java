@@ -6,10 +6,10 @@
 
 package gov.usgs.volcanoes.pensive;
 
-import gov.usgs.plot.data.SliceWave;
-import gov.usgs.plot.data.Wave;
-import gov.usgs.plot.render.Renderer;
 import gov.usgs.volcanoes.core.configfile.ConfigFile;
+import gov.usgs.volcanoes.core.data.SliceWave;
+import gov.usgs.volcanoes.core.data.Wave;
+import gov.usgs.volcanoes.core.legacy.plot.render.Renderer;
 import gov.usgs.volcanoes.core.time.J2kSec;
 import gov.usgs.volcanoes.core.time.Time;
 import gov.usgs.volcanoes.pensive.plot.ChannelPlotter;

@@ -5,9 +5,9 @@
 
 package gov.usgs.volcanoes.pensive.plot;
 
-import gov.usgs.plot.Plot;
-import gov.usgs.plot.PlotException;
 import gov.usgs.volcanoes.core.configfile.ConfigFile;
+import gov.usgs.volcanoes.core.legacy.plot.Plot;
+import gov.usgs.volcanoes.core.legacy.plot.PlotException;
 import gov.usgs.volcanoes.core.time.Time;
 import gov.usgs.volcanoes.pensive.Channel;
 import gov.usgs.volcanoes.swarm.data.SeismicDataSource;

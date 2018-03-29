@@ -73,12 +73,15 @@ public class WaveSource implements Runnable {
     String dsString = null;
     if (type.equals("wws")) {
       dsString = String.format("%s;wws:%s:%d:%d:%d", name, host, port, timeout * 1000, compress);
+      dataSource = DataSourceType.parseConfig(dsString);
     } else if (type.equals("wsv")) {
       dsString = String.format("%s;ws:%s:%d:%d:1800:1000:UTC", name, host, port, timeout * 1000);
+      dataSource = DataSourceType.parseConfig(dsString);
     } else if (type.equals("sls")) {
-    	dsString = String.format("%s;sls:%s:%d", name, host, port);
+        dataSource = new SeedLinkSource(host, port);
+    } else {
+      throw new RuntimeException("Unknown wave server type");
     }
-    dataSource = DataSourceType.parseConfig(dsString);
     dataSource.establish();
     dataSource.setUseCache(false);
   }

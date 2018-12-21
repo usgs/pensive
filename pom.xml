@@ -8,7 +8,7 @@
 	<packaging>jar</packaging>
 
 	<name>Pensive</name>
-	<url>http://volcanoes.usgs.gov/software/pensive</url>
+	<url>https://volcanoes.usgs.gov/software/pensive</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<version.template.file>src/main/resources/Version.java.template</version.template.file>
@@ -328,7 +328,7 @@
 			<releases>
 				<checksumPolicy>true</checksumPolicy>
 			</releases>
-			<url>http://volcanoes.usgs.gov/software/maven2/</url>
+			<url>https://volcanoes.usgs.gov/software/maven2/</url>
 		</repository>
 	</repositories>
 
@@ -359,7 +359,7 @@
 			<version>1.7.1</version>
 		</dependency>
 		<dependency>
-			<groupId>org.apache</groupId>
+			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>1.2.13</version>
 		</dependency>

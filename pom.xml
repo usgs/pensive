@@ -4,7 +4,7 @@
 
 	<groupId>gov.usgs.volcanoes</groupId>
 	<artifactId>pensive</artifactId>
-	<version>1.4.0-SNAPSHOT</version>
+	<version>1.4.1</version>
 	<packaging>jar</packaging>
 
 	<name>Pensive</name>
@@ -155,7 +155,7 @@
 							<minimizeJar>true</minimizeJar>
 							<filters>
 								<filter>
-									<artifact>org.apache:log4j</artifact>
+									<artifact>log4j:log4j</artifact>
 									<includes>
 										<include>org/apache/log4j/**</include>
 									</includes>

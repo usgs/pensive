@@ -4,7 +4,7 @@
 
 	<groupId>gov.usgs.volcanoes</groupId>
 	<artifactId>pensive</artifactId>
-	<version>1.4.1</version>
+	<version>1.5.0</version>
 	<packaging>jar</packaging>
 
 	<name>Pensive</name>
@@ -144,7 +144,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>2.4.1</version>
+				<version>3.2.1</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
@@ -190,6 +190,18 @@
                                                 <include>**</include>
                                         </includes>
                                 </filter>
+                               <filter>
+                                        <artifact>opensymphony:oscache</artifact>
+                                        <includes>
+                                                <include>**</include>
+                                        </includes>
+                                </filter>
+                               <filter>
+                                        <artifact>commons-logging:commons-logging</artifact>
+                                        <includes>
+                                                <include>**</include>
+                                        </includes>
+                                </filter>
 							</filters>
 							<artifactSet>
 								<includes>
@@ -204,6 +216,9 @@
                                     <include>edu.iris:JavaSeedLite</include>
                                     <include>opensymphony:oscache</include>
                                     <include>edu.sc.seis:seisFile</include>
+                                    <include>org.apache.httpcomponents:httpclient</include>
+                                    <include>org.apache.httpcomponents:httpcore</include>
+                                    <include>commons-logging:commons-logging</include>
 								</includes>
 							</artifactSet>
 						</configuration>
@@ -366,7 +381,7 @@
 		<dependency>
 			<groupId>gov.usgs.volcanoes</groupId>
 			<artifactId>swarm</artifactId>
-			<version>2.8.4-SNAPSHOT</version>
+			<version>2.8.14-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>gov.usgs.volcanoes</groupId>
@@ -417,7 +432,7 @@
         <dependency>
                 <groupId>edu.sc.seis</groupId>
                 <artifactId>seisFile</artifactId>
-                <version>1.8.0-JDK7</version>
+                <version>1.8.2</version>
         </dependency>
 	</dependencies>
 </project>

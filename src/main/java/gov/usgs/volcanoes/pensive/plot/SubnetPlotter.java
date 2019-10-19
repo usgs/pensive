@@ -109,7 +109,7 @@ public class SubnetPlotter {
     thumbDimension.height = config.getInt("thumbHeight", DEFAULT_THUMB_HEIGHT);
 
     channels = createChannels(config.getSubConfig(subnetName, true));
-  }
+     }
 
   /**
    * Create Channel objects for each channel on this plot.

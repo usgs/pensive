@@ -69,7 +69,7 @@ public class WaveSource implements Runnable {
     final int port = config.getInt("port", DEFAULT_PORT);
     final int timeout = config.getInt("timeout", DEFAULT_TIMEOUT_S);
     final int compress = 1;
-
+    
     String dsString = null;
     if (type.equals("wws")) {
       dsString = String.format("%s;wws:%s:%d:%d:%d", name, host, port, timeout * 1000, compress);
@@ -77,12 +77,13 @@ public class WaveSource implements Runnable {
     } else if (type.equals("wsv")) {
       dsString = String.format("%s;ws:%s:%d:%d:1800:1000:UTC", name, host, port, timeout * 1000);
       dataSource = DataSourceType.parseConfig(dsString);
-    } else if (type.equals("sls")) {
-        dataSource = new SeedLinkSource(host, port);
+    } else if (type.equals("fdsnws")) {
+      String user = config.getString("user", null);
+      String password = config.getString("password", null);
+      dataSource = new FdsnwsSource(config.getString("dataselectUrl"), user, password);
     } else {
       throw new RuntimeException("Unknown wave server type");
     }
-    dataSource.establish();
     dataSource.setUseCache(false);
   }
 

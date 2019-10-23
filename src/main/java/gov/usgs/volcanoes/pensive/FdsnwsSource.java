@@ -4,6 +4,7 @@ import edu.iris.dmc.seedcodec.Codec;
 import edu.iris.dmc.seedcodec.CodecException;
 import edu.iris.dmc.seedcodec.DecompressedData;
 import edu.iris.dmc.seedcodec.UnsupportedCompressionType;
+import edu.sc.seis.seisFile.ChannelTimeWindow;
 import edu.sc.seis.seisFile.SeisFileException;
 import edu.sc.seis.seisFile.fdsnws.FDSNDataSelectQuerier;
 import edu.sc.seis.seisFile.fdsnws.FDSNDataSelectQueryParams;
@@ -16,13 +17,13 @@ import edu.sc.seis.seisFile.mseed.DataRecord;
 import edu.sc.seis.seisFile.mseed.DataRecordIterator;
 import edu.sc.seis.seisFile.mseed.SeedFormatException;
 
+import gov.usgs.volcanoes.core.configfile.ConfigFile;
 import gov.usgs.volcanoes.core.data.HelicorderData;
 import gov.usgs.volcanoes.core.data.Wave;
 import gov.usgs.volcanoes.core.time.J2kSec;
 import gov.usgs.volcanoes.swarm.data.GulperListener;
 import gov.usgs.volcanoes.swarm.data.SeismicDataSource;
 
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -38,10 +39,10 @@ public class FdsnwsSource extends SeismicDataSource {
   private final String user;
   private final String password;
 
-  public FdsnwsSource(String dataselectUri, String user, String password) {
-    this.dataselectUri = dataselectUri;
-    this.user = user;
-    this.password = password;
+  public FdsnwsSource(final ConfigFile config) {
+    this.dataselectUri = config.getString("dataselectUrl");
+    this.user = config.getString("user", null);
+    this.password = config.getString("password", null);
   }
 
 
@@ -55,7 +56,7 @@ public class FdsnwsSource extends SeismicDataSource {
     throw new UnsupportedOperationException();
   }
 
-  private FDSNDataSelectQueryParams configureParams(String station, double t1, double t2) {
+  private FDSNDataSelectQueryParams configureParamsOld(String station, double t1, double t2) {
     System.out.println("Station: " + station);
     String[] parts = station.split("\\s+");
     FDSNDataSelectQueryParams queryParams = new FDSNDataSelectQueryParams();
@@ -67,6 +68,25 @@ public class FdsnwsSource extends SeismicDataSource {
     if (parts.length > 3) {
       queryParams.appendToLocation(parts[3]);
     }
+
+    URI uri;
+    try {
+      uri = new URI(dataselectUri);
+      queryParams.setScheme(uri.getScheme());
+      queryParams.setPort(uri.getPort());
+      queryParams.setFdsnwsPath(uri.getPath());
+      queryParams.setHost(uri.getHost());
+      System.out.println(queryParams.formURI());
+    } catch (URISyntaxException e) {
+      throw new RuntimeException(
+          "Cannot parse URI " + dataselectUri + ": " + e.getLocalizedMessage());
+    }
+
+    return queryParams;
+  }
+
+  private FDSNDataSelectQueryParams configureParams() {
+    FDSNDataSelectQueryParams queryParams = new FDSNDataSelectQueryParams();
 
     URI uri;
     try {
@@ -133,11 +153,23 @@ public class FdsnwsSource extends SeismicDataSource {
 
   @Override
   public Wave getWave(String station, double t1, double t2) {
-    FDSNDataSelectQueryParams queryParams = configureParams(station, t1, t2);
-    FDSNDataSelectQuerier querier = new FDSNDataSelectQuerier(queryParams);
+    FDSNDataSelectQueryParams queryParams = configureParams();
+    String[] parts = station.split("\\s+");
+    String sta = parts[0];
+    String cha = parts[1];
+    String net = parts[2];
+    String loc = "";
+    if (parts.length > 3) {
+      loc = parts[3];
+    }
+    
+    ChannelTimeWindow channelTime = new ChannelTimeWindow(net, sta, loc, cha, J2kSec.asDate(t1),  J2kSec.asDate(t2));
+    List<ChannelTimeWindow> request = new ArrayList<ChannelTimeWindow>();
+    request.add(channelTime);
+    FDSNDataSelectQuerier querier = new FDSNDataSelectQuerier(queryParams, request);
     if (user != null) {
       querier.enableRestrictedData(user, password);
-    }
+    }   
 
     DataRecordIterator it = null;
     Wave wave = null;

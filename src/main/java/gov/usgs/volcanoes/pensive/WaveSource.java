@@ -78,9 +78,7 @@ public class WaveSource implements Runnable {
       dsString = String.format("%s;ws:%s:%d:%d:1800:1000:UTC", name, host, port, timeout * 1000);
       dataSource = DataSourceType.parseConfig(dsString);
     } else if (type.equals("fdsnws")) {
-      String user = config.getString("user", null);
-      String password = config.getString("password", null);
-      dataSource = new FdsnwsSource(config.getString("dataselectUrl"), user, password);
+      dataSource = new FdsnwsSource(config);
     } else {
       throw new RuntimeException("Unknown wave server type");
     }

@@ -6,10 +6,10 @@
 
 package gov.usgs.volcanoes.pensive.plot;
 
-import gov.usgs.plot.render.TextRenderer;
-import gov.usgs.plot.render.wave.SliceWaveRenderer;
-import gov.usgs.plot.render.wave.SpectrogramRenderer;
 import gov.usgs.volcanoes.core.configfile.ConfigFile;
+import gov.usgs.volcanoes.core.legacy.plot.render.TextRenderer;
+import gov.usgs.volcanoes.core.legacy.plot.render.wave.SliceWaveRenderer;
+import gov.usgs.volcanoes.core.legacy.plot.render.wave.SpectrogramRenderer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

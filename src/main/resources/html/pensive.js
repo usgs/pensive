@@ -86,9 +86,13 @@ function init() {
 	});
 
 	// fire subnet change trigger to get things rolling
-	<#if selectedNetwork??>
-		$("#network").val("${selectedNetwork}").prop('selected', true);
-	</#if>
+  <#if selectedNetwork??>
+ 
+ 	  param = getUrlParameter("network");
+	  if (param == null) {
+		  $("#network").val("${selectedNetwork}").prop('selected', true);
+	  }
+  </#if>
 	$("#network").trigger("change");
 	
 }

@@ -37,6 +37,10 @@ public class RealtimePlotScheduler extends AbstractPlotScheduler {
       try {
         LOGGER.info("Scheduling subnet " + subnet.subnetName);
         plotJobs.put(new PlotJob(subnet));
+        if (subnet.printPrevious) {
+          LOGGER.info("Scheduling previous plot for subnet " + subnet.subnetName);
+          plotJobs.put(new PlotJob(subnet, PlotJob.DO_PRINT_PREVIOUS));        
+        }
       } catch (final InterruptedException e) {
         LOGGER.info("Interrupted. Unable to schedule " + subnet.subnetName);
       }

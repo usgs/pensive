@@ -1,22 +1,25 @@
 /**
- * I waive copyright and related rights in the this work worldwide
- * through the CC0 1.0 Universal public domain dedication.
- * https://creativecommons.org/publicdomain/zero/1.0/legalcode
+ * I waive copyright and related rights in the this work worldwide through the CC0 1.0 Universal
+ * public domain dedication. https://creativecommons.org/publicdomain/zero/1.0/legalcode
  */
 
 package gov.usgs.volcanoes.pensive;
 
-import gov.usgs.plot.data.SliceWave;
-import gov.usgs.plot.data.Wave;
-import gov.usgs.plot.render.Renderer;
 import gov.usgs.volcanoes.core.configfile.ConfigFile;
+import gov.usgs.volcanoes.core.data.Scnl;
+import gov.usgs.volcanoes.core.data.SliceWave;
+import gov.usgs.volcanoes.core.data.Wave;
+import gov.usgs.volcanoes.core.legacy.plot.render.Renderer;
 import gov.usgs.volcanoes.core.time.J2kSec;
 import gov.usgs.volcanoes.core.time.Time;
+import gov.usgs.volcanoes.core.time.TimeSpan;
+import gov.usgs.volcanoes.core.util.UtilException;
 import gov.usgs.volcanoes.pensive.plot.ChannelPlotter;
 import gov.usgs.volcanoes.pensive.plot.FullPlotter;
 import gov.usgs.volcanoes.pensive.plot.SubnetPlotter;
 import gov.usgs.volcanoes.pensive.plot.ThumbnailPlotter;
 import gov.usgs.volcanoes.swarm.data.SeismicDataSource;
+import gov.usgs.volcanoes.swarm.data.seedlink.SeedLinkSource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,6 +79,7 @@ public class Channel {
   /** data file timestamp format. */
   private final String dataTimestampFormat;
 
+
   /**
    * Class constructor.
    *
@@ -116,7 +120,11 @@ public class Channel {
   public void updateWave(final long plotEndMs, final SeismicDataSource dataSource) {
     final double t2 = J2kSec.fromEpoch(plotEndMs);
     final double t1 = t2 - SubnetPlotter.DURATION_S;
-    final Wave w = dataSource.getWave(name.replace('_', ' '), t1, t2);
+
+    Wave w2;
+    w2 = dataSource.getWave(name.replace('_', ' '), t1, t2);
+
+    final Wave w = w2;
     if (w != null && w.numSamples() > 0) {
       w.detrend();
       w.removeMean();

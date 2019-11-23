@@ -5,14 +5,15 @@
 
 package gov.usgs.volcanoes.pensive.plot;
 
-import gov.usgs.plot.data.SliceWave;
-import gov.usgs.plot.data.Spectrogram;
-import gov.usgs.plot.render.BasicFrameRenderer;
-import gov.usgs.plot.render.TextRenderer;
-import gov.usgs.plot.render.wave.MinuteMarkingWaveRenderer;
-import gov.usgs.plot.render.wave.SliceWaveRenderer;
-import gov.usgs.plot.render.wave.SpectrogramRenderer;
+
 import gov.usgs.volcanoes.core.configfile.ConfigFile;
+import gov.usgs.volcanoes.core.data.SliceWave;
+import gov.usgs.volcanoes.core.data.Spectrogram;
+import gov.usgs.volcanoes.core.legacy.plot.render.BasicFrameRenderer;
+import gov.usgs.volcanoes.core.legacy.plot.render.TextRenderer;
+import gov.usgs.volcanoes.core.legacy.plot.render.wave.MinuteMarkingWaveRenderer;
+import gov.usgs.volcanoes.core.legacy.plot.render.wave.SliceWaveRenderer;
+import gov.usgs.volcanoes.core.legacy.plot.render.wave.SpectrogramRenderer;
 import gov.usgs.volcanoes.core.time.J2kSec;
 import gov.usgs.volcanoes.core.time.Time;
 

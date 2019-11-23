@@ -11,6 +11,7 @@ import gov.usgs.volcanoes.pensive.schedule.AbstractPlotScheduler;
 import gov.usgs.volcanoes.pensive.schedule.BackfillPlotScheduler;
 import gov.usgs.volcanoes.pensive.schedule.RealtimePlotScheduler;
 
+import org.apache.log4j.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,7 +54,8 @@ public class Pensive {
   /**
    * Class constructor.
    *
-   * @param configFile my config file
+   * @param configFile
+   *            my config file
    */
   public Pensive(final ConfigFile configFile) {
 
@@ -72,9 +74,12 @@ public class Pensive {
   /**
    * Class constructor used for back-filling.
    * 
-   * @param configFile my config file
-   * @param startTime time of first plot
-   * @param endTime time of last plot. May be in the future.
+   * @param configFile
+   *            my config file
+   * @param startTime
+   *            time of first plot
+   * @param endTime
+   *            time of last plot. May be in the future.
    */
   public Pensive(final ConfigFile configFile, final Date startTime, final Date endTime) {
     super();
@@ -235,8 +240,10 @@ public class Pensive {
   /**
    * Where it all begins.
    *
-   * @param args command line args
-   * @throws Exception when things go wrong
+   * @param args
+   *            command line args
+   * @throws Exception
+   *             when things go wrong
    */
   public static void main(final String[] args) throws Exception {
     final PensiveArgs config = new PensiveArgs(args);
@@ -244,9 +251,14 @@ public class Pensive {
     ConfigFile cf = null;
     cf = new ConfigFile(config.configFileName);
     if (!cf.wasSuccessfullyRead()) {
-      LOGGER.error("Couldn't find config file " + config.configFileName
-          + ". Use '-c' to create an example config.");
+      LOGGER.error(
+          "Couldn't find config file " + config.configFileName
+              + ". Use '-c' to create an example config.");
       System.exit(1);
+    }
+
+    if (config.squelchHTML) {
+      cf.put("writeHtml", "false", false);
     }
 
     final Pensive pensive = new Pensive(cf);

@@ -8,14 +8,17 @@ package gov.usgs.volcanoes.pensive;
 
 import com.martiansoftware.jsap.JSAPResult;
 import com.martiansoftware.jsap.Parameter;
+import com.martiansoftware.jsap.Switch;
 
 import gov.usgs.volcanoes.core.args.Args;
 import gov.usgs.volcanoes.core.args.Arguments;
 import gov.usgs.volcanoes.core.args.decorator.ConfigFileArg;
 import gov.usgs.volcanoes.core.args.decorator.CreateConfigArg;
-import gov.usgs.volcanoes.core.args.decorator.DateRangeArg;
+import gov.usgs.volcanoes.core.args.decorator.TimeSpanArg;
 import gov.usgs.volcanoes.core.args.decorator.VerboseArg;
+import gov.usgs.volcanoes.core.time.TimeSpan;
 
+import org.apache.log4j.Level;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +41,9 @@ public class PensiveArgs {
   /** format of time on cmd line */
   public static final String INPUT_TIME_FORMAT = "yyyyMMddHHmm";
 
-  private static final Parameter[] PARAMETERS = new Parameter[] {};
+  private static final Parameter[] PARAMETERS = new Parameter[] {
+	      new Switch("squelchHTML", 's', "squelchHTML", "Produce images only, no HTML."),
+  };
 
   /** If true, log more. */
   public final boolean verbose;
@@ -49,6 +54,9 @@ public class PensiveArgs {
   /** Time of last plot. May be in the future. */
   public final long endTime;
   
+  /** squelch HTML. */
+  public final boolean squelchHTML;
+
   /** my config file. */
   public final String configFileName;
 
@@ -62,35 +70,39 @@ public class PensiveArgs {
     args = new Args(PROGRAM_NAME, EXPLANATION, PARAMETERS);
     args = new ConfigFileArg(DEFAULT_CONFIG_FILENAME, args);
     args = new CreateConfigArg(EXAMPLE_CONFIG_FILENAME, args);
-    args = new DateRangeArg(INPUT_TIME_FORMAT, args);
+    args = new TimeSpanArg(INPUT_TIME_FORMAT, false, args);
     args = new VerboseArg(args);
 
     JSAPResult jsapResult = null;
     jsapResult = args.parse(commandLineArgs);
 
     verbose = jsapResult.getBoolean("verbose");
+    if (verbose) {
+      org.apache.log4j.Logger.getRootLogger().setLevel(Level.ALL);
+      System.out.println("TOMP SAYS VERBOSE");
+    } else {
+      org.apache.log4j.Logger.getRootLogger().setLevel(Level.INFO);
+    }
+
     LOGGER.debug("Setting: verbose={}", verbose);
 
-    final Date startDate = jsapResult.getDate("startTime");
-    if (startDate == null) {
-      startTime = Long.MIN_VALUE;
+    squelchHTML = jsapResult.getBoolean("squelchHTML");
+    
+    final TimeSpan timeSpan = (TimeSpan) jsapResult.getObject("timeSpan");
+    if (timeSpan == null) {
+    		startTime = Long.MIN_VALUE;
+    		endTime = Long.MAX_VALUE;
     } else {
-      startTime = jsapResult.getDate("startTime").getTime();
+        startTime = timeSpan.startTime;    	
+        endTime = timeSpan.endTime;
     }
     LOGGER.debug("Setting: startTime={}", startTime);
-
-    final Date endDate = jsapResult.getDate("endTime");
-    if (endDate == null) {
-      endTime = Long.MIN_VALUE;
-    } else {
-      endTime = jsapResult.getDate("endTime").getTime();
-    }
     LOGGER.debug("Setting: endTime={}", endTime);
 
     configFileName = jsapResult.getString("config-filename");
     LOGGER.debug("Setting: config-filename={}", configFileName);
 
-    if (jsapResult.getBoolean("create-config")) {
+    if (jsapResult.getBoolean("create-config") || jsapResult.getBoolean("help")) {
       System.exit(1);
     }
   }

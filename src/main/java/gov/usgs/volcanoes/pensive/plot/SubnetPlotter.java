@@ -45,7 +45,8 @@ public class SubnetPlotter {
   private static final int DEFAULT_THUMB_WIDTH = 151;
   private static final int DEFAULT_THUMB_HEIGHT = 198;
   private static final int DEFAULT_EMBARGO = 5;
-
+  private static final boolean DEFAULT_PRINT_PREVIOUS = false;
+  
   /** width of plot decorations in pixels. */
   public static final int LABEL_HEIGHT = 35;
 
@@ -79,6 +80,9 @@ public class SubnetPlotter {
   /** thumbnail dimension. */
   private final Dimension thumbDimension;
 
+  /** Print the previous plot too. */
+  public final boolean printPrevious;
+
   /** Channels on this plot. */
   private final List<Channel> channels;
 
@@ -99,7 +103,7 @@ public class SubnetPlotter {
     filePathFormat = config.getString("filePathFormat", DEFAULT_FILE_PATH_FORMAT);
     fileSuffixFormat = config.getString("fileSuffixFormat", DEFAULT_FILE_SUFFIX_FORMAT);
     embargoMs = config.getInt("embargo", DEFAULT_EMBARGO) * 1000;
-
+    printPrevious = config.getBoolean("replot", false);
     plotDimension = new Dimension();
     plotDimension.width = config.getInt("plotWidth", DEFAULT_PLOT_WIDTH);
     plotDimension.height = config.getInt("plotHeight", DEFAULT_PLOT_HEIGHT);

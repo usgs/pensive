@@ -15,6 +15,10 @@ import gov.usgs.volcanoes.pensive.plot.SubnetPlotter;
  */
 public class PlotJob implements Comparable<PlotJob> {
 
+  /** if true replot the previous run */
+  public static final boolean DO_PRINT_PREVIOUS = true;
+  public static final boolean NO_PRINT_PREVIOUS = false;
+
   /** Time of last sample plotted. */
   public final long plotEndMs;
 
@@ -24,7 +28,6 @@ public class PlotJob implements Comparable<PlotJob> {
   /** my subnet. */
   public final SubnetPlotter subnet;
 
-
   /**
    * Class constructor which uses the most recent time slice as the time of
    * the last sample to be plotted.
@@ -32,8 +35,22 @@ public class PlotJob implements Comparable<PlotJob> {
    * @param subnet my subnet
    */
   public PlotJob(final SubnetPlotter subnet) {
+    this(subnet, false);
+  }
+
+  /**
+   * Class constructor which uses the most recent time slice as the time of
+   * the last sample to be plotted.
+   *
+   * @param subnet my subnet
+   */
+  public PlotJob(final SubnetPlotter subnet, boolean oneBehind) {
     this.subnet = subnet;
-    this.plotEndMs = findPlotEnd();
+    long plotEndMs = findPlotEnd();
+    if (oneBehind) {
+      plotEndMs -= SubnetPlotter.DURATION_S * 1000;
+    }
+    this.plotEndMs = plotEndMs;
     plotTimeMs = plotEndMs + subnet.embargoMs;
   }
 
